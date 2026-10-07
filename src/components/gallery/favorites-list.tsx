@@ -16,7 +16,7 @@ export function FavoritesList({ thumbnails }: { thumbnails: Record<string, strin
       <h1 className="mb-2 font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">Mes favoris</h1>
       <p className="mb-10 text-lg text-muted-foreground">Les modèles que vous avez mis de côté.</p>
       {hydrated && list.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 rounded-3xl bg-secondary/60 px-6 py-20 text-center">
+        <div className="flex flex-col items-center gap-4 rounded-3xl bg-secondary/60 px-6 py-20 text-center shadow-card">
           <span className="grid size-16 place-items-center rounded-full bg-accent-pink/20">
             <Heart className="size-8 text-accent-pink" aria-hidden />
           </span>

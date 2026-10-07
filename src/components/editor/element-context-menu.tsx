@@ -55,7 +55,7 @@ export function ElementContextMenu({ x, y, onClose }: { x: number; y: number; on
     <div
       ref={ref}
       role="menu"
-      className="fixed z-50 w-64 rounded-xl bg-white p-1.5 shadow-[0_10px_40px_rgba(14,34,56,0.22)] ring-1 ring-black/5"
+      className="fixed z-50 w-64 rounded-xl bg-white p-1.5 shadow-panel ring-1 ring-black/5"
       style={{ left, top }}
       onPointerDown={(e) => e.stopPropagation()}
     >

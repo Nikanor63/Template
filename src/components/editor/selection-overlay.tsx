@@ -190,7 +190,7 @@ export function SelectionOverlay({
                     key={h}
                     onPointerDown={(e) => startResize(e, single, h)}
                     className={cn(
-                      'pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 border border-black/10 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.3)]',
+                      'pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 border border-black/10 bg-white shadow-card',
                       side ? (vertical ? 'h-5 w-2 rounded-full' : 'h-2 w-5 rounded-full') : 'size-3.5 rounded-full',
                     )}
                     style={{ left: pos.left, top: pos.top, cursor: pos.cursor }}
@@ -201,7 +201,7 @@ export function SelectionOverlay({
                 type="button"
                 aria-label="Faire pivoter"
                 onPointerDown={(e) => startRotate(e, single)}
-                className="pointer-events-auto absolute left-1/2 top-full mt-4 grid size-7 -translate-x-1/2 cursor-grab place-items-center rounded-full bg-white shadow-[0_1px_6px_rgba(0,0,0,0.3)] active:cursor-grabbing"
+                className="pointer-events-auto absolute left-1/2 top-full mt-4 grid size-7 -translate-x-1/2 cursor-grab place-items-center rounded-full bg-white shadow-panel active:cursor-grabbing"
               >
                 <RotateCw className="size-3.5 text-ink" />
               </button>
@@ -212,7 +212,7 @@ export function SelectionOverlay({
 
       {bbox && !editingId && (
         <div
-          className="pointer-events-auto absolute flex -translate-x-1/2 items-center gap-0.5 rounded-lg bg-white p-1 shadow-[0_4px_16px_rgba(14,34,56,0.18)] ring-1 ring-black/5"
+          className="pointer-events-auto absolute flex -translate-x-1/2 items-center gap-0.5 rounded-lg bg-white p-1 shadow-panel ring-1 ring-black/5"
           style={{
             left: ((bbox.x + bbox.r) / 2) * zoom,
             top: bbox.y * zoom > 56 ? bbox.y * zoom - 52 : bbox.b * zoom + 52,

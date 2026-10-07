@@ -36,7 +36,7 @@ interface EditorState {
   checkpoint: () => void
   patch: (id: string, patch: ElementPatch, record?: boolean) => void
   patchMany: (patches: Record<string, ElementPatch>, record?: boolean) => void
-  patchSelected: (patch: ElementPatch) => void
+  patchSelected: (patch: ElementPatch, record?: boolean) => void
   add: (el: CvElement | CvElement[]) => void
   removeSelected: () => void
   duplicateSelected: () => void
@@ -101,9 +101,9 @@ export const useEditor = create<EditorState>()((set, get) => {
         record,
       ),
 
-    patchSelected: (patch) => {
+    patchSelected: (patch, record = true) => {
       const ids = new Set(get().selected)
-      commit((d) => ({ elements: d.elements.map((el) => (ids.has(el.id) ? ({ ...el, ...patch } as CvElement) : el)) }))
+      commit((d) => ({ elements: d.elements.map((el) => (ids.has(el.id) ? ({ ...el, ...patch } as CvElement) : el)) }), record)
     },
 
     add: (input) => {

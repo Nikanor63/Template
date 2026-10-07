@@ -40,7 +40,7 @@ export function HomeCategories() {
             <li key={c} className="cat-pill">
               <Link
                 href={`/modeles?categorie=${encodeURIComponent(c)}`}
-                className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold text-ink transition-transform hover:-translate-y-0.5 ${COLORS[i % COLORS.length]}`}
+                className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-bold text-ink shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover ${COLORS[i % COLORS.length]}`}
               >
                 {c}
                 <span className="rounded-full bg-white/80 px-2 py-0.5 text-xs font-bold">

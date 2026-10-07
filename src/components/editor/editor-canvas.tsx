@@ -59,7 +59,7 @@ function EditableText({ el }: { el: TextElement }) {
       aria-multiline="true"
       aria-label="Modifier le texte"
       spellCheck
-      style={{ ...textStyle(el), outline: 'none', cursor: 'text', caretColor: '#5CAFE7' }}
+      style={{ ...textStyle(el), outline: 'none', cursor: 'text', caretColor: 'var(--primary)' }}
       onInput={sync}
       onBlur={() => {
         sync()
@@ -251,9 +251,10 @@ export function EditorCanvas() {
         <div className="relative" style={{ width: design.width * zoom, height: design.height * zoom }}>
           <div
             ref={pageRef}
+            id="cv-editor-page"
             role="application"
             aria-label="Page du CV"
-            className="absolute left-0 top-0 origin-top-left overflow-hidden shadow-[0_2px_24px_rgba(14,34,56,0.18)]"
+            className="absolute left-0 top-0 origin-top-left overflow-hidden shadow-cv"
             style={{ width: design.width, height: design.height, background: design.background, transform: `scale(${zoom})` }}
           >
             {design.elements.map((el) => {

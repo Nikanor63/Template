@@ -42,7 +42,7 @@ export function HomeFeatures() {
         </h2>
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => (
-            <li key={f.title} className="feature-card rounded-3xl bg-white/[0.06] p-7 ring-1 ring-white/10">
+            <li key={f.title} className="feature-card rounded-3xl bg-white/[0.06] p-7 shadow-panel ring-1 ring-white/10 transition-transform hover:-translate-y-1">
               <span className={`mb-5 grid size-12 place-items-center rounded-2xl text-ink ${f.tone}`}>
                 <f.icon className="size-6" aria-hidden />
               </span>

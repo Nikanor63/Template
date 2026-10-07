@@ -21,7 +21,7 @@ export function SiteHeader() {
   const favCount = useLibrary((s) => s.favorites.length)
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-surface/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-surface/90 shadow-sm backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 md:px-6">
         <Logo />
         <nav aria-label="Navigation principale" className="hidden items-center gap-1 md:flex">
@@ -30,7 +30,7 @@ export function SiteHeader() {
               key={l.href}
               href={l.href}
               className={cn(
-                'rounded-full px-4 py-2 text-sm font-semibold text-ink/70 transition-colors hover:bg-secondary hover:text-ink',
+                'rounded-full px-4 py-2 text-sm font-bold text-ink/70 transition-colors hover:bg-secondary hover:text-ink',
                 pathname.startsWith(l.href) && 'bg-secondary text-ink',
               )}
             >
@@ -54,7 +54,7 @@ export function SiteHeader() {
           </Link>
           <Link
             href="/modeles"
-            className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-ink shadow-[0_6px_20px_-6px_rgba(92,175,231,0.8)] transition-transform hover:-translate-y-0.5 sm:inline-flex"
+            className="hidden rounded-full bg-primary px-5 py-2.5 text-sm font-extrabold text-ink shadow-primary transition-transform hover:-translate-y-0.5 sm:inline-flex"
           >
             Créer mon CV
           </Link>
@@ -76,7 +76,7 @@ export function SiteHeader() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="block rounded-lg px-3 py-2.5 font-semibold text-ink hover:bg-secondary"
+              className="block rounded-lg px-3 py-2.5 font-bold text-ink hover:bg-secondary"
             >
               {l.label}
             </Link>

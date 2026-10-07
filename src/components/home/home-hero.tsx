@@ -59,7 +59,7 @@ export function HomeHero({ templateIds }: { templateIds: string[] }) {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/modeles"
-              className="hero-cta inline-flex h-13 items-center gap-2 rounded-full bg-primary px-7 font-bold text-ink shadow-[0_10px_30px_-10px_rgba(92,175,231,0.9)] transition-transform hover:-translate-y-0.5"
+              className="hero-cta inline-flex h-13 items-center gap-2 rounded-full bg-primary px-7 font-extrabold text-ink shadow-primary transition-transform hover:-translate-y-0.5"
             >
               Parcourir les modèles
               <ArrowRight className="size-5" aria-hidden />
@@ -92,17 +92,17 @@ export function HomeHero({ templateIds }: { templateIds: string[] }) {
           <div className="hero-blob absolute bottom-[4%] right-[4%] size-48 rounded-full bg-accent-pink/30 blur-2xl" />
           <div className="hero-blob absolute right-[18%] top-[2%] size-20 rounded-full bg-accent-yellow" />
           {templates[1] && (
-            <div className="hero-card hero-card-2 absolute left-0 top-16 w-[44%] -rotate-6 overflow-hidden rounded-xl shadow-2xl ring-1 ring-black/5">
+            <div className="hero-card hero-card-2 absolute left-0 top-16 w-[44%] -rotate-6 overflow-hidden rounded-xl shadow-cv ring-1 ring-black/5">
               <CvThumbnail design={templates[1].design} alt="" />
             </div>
           )}
           {templates[2] && (
-            <div className="hero-card hero-card-3 absolute right-0 top-24 w-[44%] rotate-6 overflow-hidden rounded-xl shadow-2xl ring-1 ring-black/5">
+            <div className="hero-card hero-card-3 absolute right-0 top-24 w-[44%] rotate-6 overflow-hidden rounded-xl shadow-cv ring-1 ring-black/5">
               <CvThumbnail design={templates[2].design} alt="" />
             </div>
           )}
           {templates[0] && (
-            <div className="hero-card hero-card-1 absolute left-1/2 top-0 w-[52%] -translate-x-1/2 overflow-hidden rounded-xl shadow-[0_30px_60px_-20px_rgba(14,34,56,0.45)] ring-1 ring-black/5">
+            <div className="hero-card hero-card-1 absolute left-1/2 top-0 w-[52%] -translate-x-1/2 overflow-hidden rounded-xl shadow-cv ring-1 ring-black/5">
               <CvThumbnail design={templates[0].design} alt="" />
             </div>
           )}

@@ -1,17 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { useRef, useState } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
+import { useMemo, useState } from 'react'
 import { ArrowLeft, Check, Minus, PenLine, Plus } from 'lucide-react'
 import { CvThumbnail } from '@/components/cv/cv-thumbnail'
 import { FavoriteButton } from '@/components/site/favorite-button'
 import { TemplateCard } from '@/components/site/template-card'
 import { useOpenTemplate } from '@/hooks/use-open-template'
-import { getTemplate } from '@/lib/cv/templates'
-
-gsap.registerPlugin(useGSAP)
+import { getTemplate, TEMPLATES } from '@/lib/cv/templates'
+import type { CvDesign, CvElement } from '@/lib/cv/types'
 
 export default function Apercu({
   templateId,
@@ -26,28 +23,22 @@ export default function Apercu({
   const similar = similarIds.map((id) => getTemplate(id)!).filter(Boolean)
   const open = useOpenTemplate()
   const [zoom, setZoom] = useState(1)
-  const root = useRef<HTMLDivElement>(null)
+  const [selectedColor, setSelectedColor] = useState(template.accent)
 
-  useGSAP(
-    () => {
-      gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from('.apercu-paper', { y: 60, opacity: 0, rotate: -2, duration: 1, ease: 'expo.out' })
-        gsap.from('.apercu-info > *', { x: 30, opacity: 0, stagger: 0.08, duration: 0.7, ease: 'power3.out', delay: 0.15 })
-      })
-    },
-    { scope: root },
-  )
-
-  const colors = Array.from(
-    new Set(
-      template.design.elements
-        .flatMap((el) => [('fill' in el && el.fill) || '', ('color' in el && el.color) || ''])
-        .filter((c) => c && c !== 'transparent'),
-    ),
-  ).slice(0, 5)
+  const colors = Array.from(new Set(TEMPLATES.filter((item) => item.category === template.category).map((item) => item.accent)))
+  const previewDesign = useMemo(() => {
+    const replace = (value: string) => value.toLowerCase() === template.accent.toLowerCase() ? selectedColor : value
+    const elements = template.design.elements.map((element) => {
+      if (element.type === 'text' || element.type === 'icon') return { ...element, color: replace(element.color) }
+      if (element.type === 'rect' || element.type === 'circle') return { ...element, fill: replace(element.fill), stroke: replace(element.stroke) }
+      if (element.type === 'line' || element.type === 'image') return { ...element, stroke: replace(element.stroke) }
+      return element
+    }) as CvElement[]
+    return { ...template.design, elements } as CvDesign
+  }, [selectedColor, template])
 
   return (
-    <div ref={root} className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
       <Link href="/modeles" className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-ink/70 hover:text-ink">
         <ArrowLeft className="size-4" aria-hidden />
         Retour aux modèles
@@ -57,8 +48,8 @@ export default function Apercu({
         <section aria-label="Aperçu du CV" className="relative flex flex-col items-center rounded-3xl bg-secondary/70 p-6 md:p-10">
           <div className="max-h-[78vh] w-full overflow-auto rounded-xl">
             <div className="mx-auto transition-[width] duration-300" style={{ width: `${Math.min(100, 62 * zoom)}%`, minWidth: 260 }}>
-              <div className="apercu-paper overflow-hidden rounded-md bg-white shadow-[0_30px_70px_-25px_rgba(14,34,56,0.5)]">
-                <CvThumbnail design={template.design} thumbnail={thumbnails[template.id]} alt={`CV ${template.name} en grand format`} />
+              <div className="overflow-hidden rounded-md bg-white shadow-cv">
+                <CvThumbnail design={previewDesign} alt={`CV ${template.name} en grand format`} />
               </div>
             </div>
           </div>
@@ -83,7 +74,7 @@ export default function Apercu({
           </div>
         </section>
 
-        <aside className="apercu-info flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+        <aside className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
           <span className="w-fit rounded-full bg-accent-yellow px-3 py-1 text-xs font-bold uppercase tracking-wider text-ink">
             {template.category}
           </span>
@@ -99,7 +90,7 @@ export default function Apercu({
             <button
               type="button"
               onClick={() => open(template)}
-              className="inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primary font-bold text-ink shadow-[0_10px_30px_-10px_rgba(92,175,231,0.9)] transition-transform hover:-translate-y-0.5"
+              className="inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primary font-extrabold text-ink shadow-primary transition-transform hover:-translate-y-0.5"
             >
               <PenLine className="size-5" aria-hidden />
               Personnaliser ce modèle
@@ -110,10 +101,22 @@ export default function Apercu({
           {colors.length > 0 && (
             <div>
               <h2 className="mb-3 text-sm font-bold text-ink">Palette</h2>
-              <ul className="flex gap-2">
+              <ul className="flex flex-wrap gap-2">
                 {colors.map((c) => (
-                  <li key={c} className="size-9 rounded-full ring-1 ring-black/10" style={{ background: c }} title={c}>
-                    <span className="sr-only">{c}</span>
+                  <li key={c}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedColor(c)}
+                      aria-label={`Appliquer la couleur ${c} à l’aperçu`}
+                      aria-pressed={(selectedColor ?? template.accent) === c}
+                      className={`grid size-9 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
+                        (selectedColor ?? template.accent) === c ? 'ring-2 ring-ink ring-offset-2' : 'ring-1 ring-black/10'
+                      }`}
+                      style={{ background: c }}
+                      title={`Appliquer ${c}`}
+                    >
+                      <span className="sr-only">{c}</span>
+                    </button>
                   </li>
                 ))}
               </ul>

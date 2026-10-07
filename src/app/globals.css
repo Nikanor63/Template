@@ -7,6 +7,16 @@
 @theme inline {
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-weight-medium: 600;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 800;
+  --font-weight-extrabold: 800;
+
+  --shadow-card: 0 4px 16px -5px rgb(14 34 56 / 14%), 0 1px 3px rgb(14 34 56 / 8%);
+  --shadow-card-hover: 0 20px 42px -16px rgb(14 34 56 / 28%), 0 5px 12px -6px rgb(14 34 56 / 10%);
+  --shadow-panel: 0 16px 42px -20px rgb(14 34 56 / 24%);
+  --shadow-primary: 0 9px 26px -9px rgb(92 175 231 / 65%);
+  --shadow-cv: 0 30px 64px -24px rgb(14 34 56 / 42%);
 
   --color-brand: var(--primary);
   --color-brand-light: var(--primary-light);
@@ -27,6 +37,8 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-editor-surface: var(--editor-surface);
+  --color-editor-foreground: var(--editor-foreground);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -60,6 +72,8 @@
   --primary-foreground: #0e2238;
   --secondary: #eaf6fe;
   --secondary-foreground: #0e2238;
+  --editor-surface: #f2f7fb;
+  --editor-foreground: #0e2238;
   --muted: #f1f4f7;
   --muted-foreground: #5a6b7d;
   --accent: #eaf6fe;
@@ -76,7 +90,18 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-surface text-foreground font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-extrabold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .font-bold {
+    font-weight: 800;
   }
 }
 

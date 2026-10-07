@@ -25,7 +25,7 @@ export function MyDesigns() {
         <button
           type="button"
           onClick={() => router.push(`/editeur/${createBlank()}`)}
-          className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 font-bold text-ink"
+          className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 font-extrabold text-ink shadow-primary transition-transform hover:-translate-y-0.5"
         >
           <Plus className="size-5" aria-hidden />
           Nouveau CV vierge
@@ -33,7 +33,7 @@ export function MyDesigns() {
       </div>
 
       {hydrated && list.length === 0 ? (
-        <div className="flex flex-col items-center gap-4 rounded-3xl bg-secondary/60 px-6 py-20 text-center">
+        <div className="flex flex-col items-center gap-4 rounded-3xl bg-secondary/60 px-6 py-20 text-center shadow-card">
           <FileText className="size-12 text-primary" aria-hidden />
           <p className="text-lg font-bold text-ink">Vous n&apos;avez encore créé aucun CV</p>
           <Link href="/modeles" className="rounded-full bg-primary px-6 py-3 font-bold text-ink">
@@ -46,7 +46,7 @@ export function MyDesigns() {
             <li key={d.id} className="group flex flex-col gap-3">
               <Link
                 href={`/editeur/${d.id}`}
-                className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition-all group-hover:-translate-y-1 group-hover:shadow-xl"
+                className="overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all group-hover:-translate-y-1 group-hover:shadow-card-hover"
               >
                 <CvThumbnail design={d} alt={`Ouvrir ${d.name}`} />
               </Link>

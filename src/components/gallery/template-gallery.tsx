@@ -128,10 +128,10 @@ export function TemplateGallery({
               onClick={() => setOnlyFav((v) => !v)}
               className={cn(
                 'inline-flex h-12 items-center gap-2 rounded-full border px-5 font-semibold shadow-sm transition-colors',
-                onlyFav ? 'border-accent-pink bg-accent-pink text-white' : 'border-border bg-white text-ink hover:bg-muted',
+                onlyFav ? 'border-accent-pink bg-accent-pink text-ink' : 'border-border bg-white text-ink hover:bg-muted',
               )}
             >
-              <Heart className={cn('size-4', onlyFav && 'fill-white')} aria-hidden />
+              <Heart className={cn('size-4', onlyFav && 'fill-ink')} aria-hidden />
               Favoris
             </button>
           </div>
@@ -146,7 +146,7 @@ export function TemplateGallery({
               onClick={() => setCategory(c)}
               className={cn(
                 'shrink-0 rounded-full px-4 py-2 text-sm font-bold transition-colors',
-                category === c ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-border hover:bg-secondary',
+                category === c ? 'bg-primary text-ink shadow-primary' : 'bg-white text-ink ring-1 ring-border hover:bg-secondary',
               )}
             >
               {c}
