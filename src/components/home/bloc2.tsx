@@ -1,3 +1,4 @@
+//Présentation des modèle disponible et des CV, permettre à l'utilisateur de mettre enfavorie et/ou de les modifier dans l'éditeur
 'use client'
 
 import Link from 'next/link'
@@ -36,12 +37,12 @@ export function HomeShowcase({ templateIds, thumbnails }: { templateIds: string[
       <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-pink">Les plus populaires</p>
-          <h2 id="showcase-title" className="font-display text-4xl font-extrabold tracking-tight text-ink text-balance">
+          <h2 id="showcase-title" className="font-display text-4xl font-extrabold tracking-tight text-ink text-balance uppercase">
             Des modèles conçus pour être remarqués
           </h2>
         </div>
-        <Link href="/modeles" className="inline-flex items-center gap-2 font-bold text-ink hover:text-primary">
-          Voir les 60 modèles
+        <Link href="/modeles" className="inline-flex items-center justify-center rounded-full bg-accent-pink h-[40] w-55 gap-2 font-extrabold text-ink hover:text-surface">
+          Voir les 78 modèles
           <ArrowRight className="size-4" aria-hidden />
         </Link>
       </div>

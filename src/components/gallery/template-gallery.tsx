@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react'
 import { Heart, Plus, Search, SlidersHorizontal, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { CATEGORIES, TEMPLATES } from '@/lib/cv/templates'
+import { CATEGORIES } from '@/lib/cv/templates'
 import type { CvTemplate, TemplateCategory } from '@/lib/cv/types'
 import { useHydrated, useLibrary } from '@/lib/store/library'
 import { TemplateCard } from '@/components/site/template-card'
@@ -42,10 +42,12 @@ export function filterTemplates(list: CvTemplate[], query: string, category: Tem
 
 export function TemplateGallery({
   thumbnails,
+  templates,
   initialCategory,
   initialQuery,
 }: {
   thumbnails: Record<string, string>
+  templates: CvTemplate[]
   initialCategory: TemplateCategory | 'Tous'
   initialQuery: string
 }) {
@@ -60,9 +62,9 @@ export function TemplateGallery({
   const gridRef = useRef<HTMLDivElement>(null)
 
   const results = useMemo(() => {
-    const base = onlyFav && hydrated ? TEMPLATES.filter((t) => favorites.includes(t.id)) : TEMPLATES
+    const base = onlyFav && hydrated ? templates.filter((t) => favorites.includes(t.id)) : templates
     return filterTemplates([...base], query, category, sort)
-  }, [query, category, sort, onlyFav, favorites, hydrated])
+  }, [query, category, sort, onlyFav, favorites, hydrated, templates])
 
   const resultKey = results.map((r) => r.id).join(',')
   useGSAP(
@@ -79,7 +81,7 @@ export function TemplateGallery({
       <div className="mb-8 flex flex-col gap-2">
         <h1 className="font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">Modèles de CV</h1>
         <p className="text-lg text-muted-foreground">
-          {TEMPLATES.length} modèles personnalisables. Survolez un modèle pour l&apos;utiliser ou voir plus de détails.
+          {templates.length} modèles personnalisables. Survolez un modèle pour l&apos;utiliser ou voir plus de détails.
         </p>
       </div>
 

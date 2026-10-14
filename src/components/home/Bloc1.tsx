@@ -1,3 +1,4 @@
+//L'accueil première partie vu par l'utilisateur avant même de scroller
 'use client'
 
 import Link from 'next/link'
@@ -38,11 +39,11 @@ export function HomeHero({ templateIds }: { templateIds: string[] }) {
     <section ref={root} className="relative overflow-hidden">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-12 md:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-24 lg:pt-20">
         <div className="relative z-10 flex flex-col items-start gap-6">
-          <span className="hero-badge inline-flex items-center gap-2 rounded-full bg-accent-yellow px-4 py-1.5 text-sm font-bold text-ink">
+          <span className="hero-badge inline-flex items-center gap-2 rounded-full bg-accent-yellow px-4 py-1.5 text-sm font-extrabold uppercase text-ink">
             <Sparkles className="size-4" aria-hidden />
-            60 modèles + création par IA
+            78 modèles + création par IA
           </span>
-          <h1 className="font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink text-balance md:text-6xl lg:text-7xl">
+          <h1 className="font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink text-balance md:text-6xl lg:text-7xl uppercase">
             <span className="block overflow-hidden pb-1">
               <span className="hero-line block">Le CV qui vous</span>
             </span>
@@ -52,27 +53,27 @@ export function HomeHero({ templateIds }: { templateIds: string[] }) {
               </span>
             </span>
           </h1>
-          <p className="hero-sub max-w-xl text-lg leading-relaxed text-ink/70 text-pretty">
+          <p className="hero-sub max-w-xl text-xl leading-relaxed text-ink/70 text-pretty uppercase font-extrabold">
             Choisissez un modèle, personnalisez chaque détail dans un éditeur glisser-déposer, ou laissez l&apos;IA
             rédiger pour vous. Exportez en PDF, PNG, JPG ou SVG.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/modeles"
-              className="hero-cta inline-flex h-13 items-center gap-2 rounded-full bg-primary px-7 font-extrabold text-ink shadow-primary transition-transform hover:-translate-y-0.5"
+              className="hero-cta inline-flex h-13 items-center gap-2 rounded-full bg-primary px-7 font-extrabold text-ink shadow-primary uppercase transition-transform hover:-translate-y-0.5"
             >
               Parcourir les modèles
               <ArrowRight className="size-5" aria-hidden />
             </Link>
             <Link
               href="/cv-ia"
-              className="hero-cta inline-flex h-13 items-center gap-2 rounded-full bg-ink px-7 font-bold text-white transition-transform hover:-translate-y-0.5"
+              className="hero-cta inline-flex h-13 items-center gap-2 rounded-full bg-ink px-7 font-extrabold uppercase text-white transition-transform hover:-translate-y-0.5"
             >
               <Sparkles className="size-5 text-accent-yellow" aria-hidden />
               Créer avec l&apos;IA
             </Link>
           </div>
-          <dl className="hero-sub mt-4 flex gap-8">
+          <dl className="hero-sub mt-4 flex gap-8 uppercase">
             {[
               ['60', 'modèles'],
               ['6', 'styles'],

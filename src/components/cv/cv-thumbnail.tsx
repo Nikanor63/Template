@@ -25,7 +25,7 @@ export function CvThumbnail({ design, thumbnail, alt }: { design: PageDesign; th
       ref={boxRef}
       role="img"
       aria-label={alt}
-      className="relative w-full overflow-hidden bg-white"
+      className="relative w-full overflow-hidden bg-surface"
       style={{ aspectRatio: `${design.width} / ${design.height}` }}
     >
       {thumbnail ? (

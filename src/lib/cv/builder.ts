@@ -500,6 +500,55 @@ const skillBars: LayoutFn = (s, c) => {
   return { background: s.bg, elements: els }
 }
 
+const editorialPhoto: LayoutFn = (s, c) => {
+  const els: CvElement[] = []
+  const side = mix(s.primary, '#ffffff', 0.92)
+  els.push(makeRect({ x: 0, y: 0, w: PAGE_WIDTH, h: 250, fill: side, name: 'En-tête éditorial' }))
+  els.push(makeRect({ x: 0, y: 0, w: 14, h: 250, fill: s.primary }))
+  if (c.photo) els.push(makeImage({ src: c.photo, x: 570, y: 38, w: 154, h: 174, radius: 14, stroke: '#ffffff', strokeWidth: 5 }))
+  const head = createColumn(els, s, 54, 48, 470, { text: s.text, muted: s.muted, accent: s.primary })
+  head.para(c.fullName, { fontFamily: s.heading, fontSize: 36, fontWeight: 800, color: s.text, lineHeight: 1.08 })
+  head.para(c.title, { fontSize: 13, color: s.primary, fontWeight: 700, uppercase: true, letterSpacing: 2 }).gap(8)
+  head.para([c.email, c.phone, c.location].join('  ·  '), { fontSize: 9.5 })
+  const main = createColumn(els, s, 54, 286, 430, { text: s.text, muted: s.muted, accent: s.primary })
+  main.heading('Profil').para(c.summary).gap(8).heading('Expérience').experiences(c.experiences).heading('Formation').education(c.education)
+  const aside = createColumn(els, s, 540, 286, 204, { text: s.text, muted: s.muted, accent: s.primary })
+  aside.heading('Compétences').pills(c.skills, side, s.text).heading('Langues').list(c.languages).heading('Intérêts').list(c.interests)
+  return { background: s.bg, elements: els }
+}
+
+const photoColumn: LayoutFn = (s, c) => {
+  const els: CvElement[] = []
+  const on = readableOn(s.primary)
+  els.push(makeRect({ x: 0, y: 0, w: 276, h: PAGE_HEIGHT, fill: s.primary, name: 'Colonne portrait' }))
+  if (c.photo) els.push(makeImage({ src: c.photo, x: 54, y: 58, w: 168, h: 168, radius: 9999, stroke: '#ffffff', strokeWidth: 5 }))
+  const profile = createColumn(els, s, 34, c.photo ? 252 : 66, 208, { text: on, muted: on, accent: on })
+  profile.para(c.fullName, { fontFamily: s.heading, fontSize: 24, fontWeight: 800, color: on, align: 'center', lineHeight: 1.1 })
+  profile.para(c.title, { fontSize: 11, color: on, align: 'center', uppercase: true, letterSpacing: 1.5 }).gap(14)
+  profile.heading('Contact').contacts(c, on).heading('Compétences').list(c.skills, { color: on }).heading('Langues').list(c.languages, { color: on })
+  const main = createColumn(els, s, 320, 64, 424, { text: s.text, muted: s.muted, accent: s.primary })
+  main.heading('À propos').para(c.summary).gap(14).heading('Expérience').experiences(c.experiences).gap(4).heading('Formation').education(c.education)
+  main.heading('Centres d’intérêt').inline(c.interests)
+  return { background: s.bg, elements: els }
+}
+
+const topPortrait: LayoutFn = (s, c) => {
+  const els: CvElement[] = []
+  const tint = mix(s.primary, '#ffffff', 0.9)
+  els.push(makeRect({ x: 0, y: 0, w: PAGE_WIDTH, h: 270, fill: s.primary, name: 'Bandeau portrait' }))
+  if (c.photo) els.push(makeImage({ src: c.photo, x: 54, y: 46, w: 150, h: 176, radius: 18, stroke: '#ffffff', strokeWidth: 4 }))
+  const on = readableOn(s.primary)
+  const head = createColumn(els, s, c.photo ? 238 : 54, 64, c.photo ? 500 : 686, { text: on, muted: on, accent: on })
+  head.para(c.fullName, { fontFamily: s.heading, fontSize: 40, fontWeight: 800, color: on, lineHeight: 1.08 })
+  head.para(c.title, { fontSize: 14, color: on, uppercase: true, letterSpacing: 2 }).gap(8)
+  head.para([c.email, c.phone, c.location].join('   ·   '), { fontSize: 10, color: on })
+  const main = createColumn(els, s, 54, 310, 410, { text: s.text, muted: s.muted, accent: s.primary })
+  main.heading('Expérience').experiences(c.experiences).heading('Formation').education(c.education)
+  const aside = createColumn(els, s, 508, 310, 236, { text: s.text, muted: s.muted, accent: s.primary })
+  aside.heading('Profil').para(c.summary).gap(8).heading('Compétences').list(c.skills).heading('Langues').list(c.languages).heading('Intérêts').list(c.interests)
+  return { background: s.bg, elements: els }
+}
+
 export const LAYOUTS: { key: string; label: string; fn: LayoutFn }[] = [
   { key: 'sidebar-left', label: 'Barre latérale', fn: sidebarLeft },
   { key: 'header-band', label: 'Bandeau', fn: headerBand },
@@ -511,6 +560,9 @@ export const LAYOUTS: { key: string; label: string; fn: LayoutFn }[] = [
   { key: 'split-top', label: 'Portrait', fn: splitTop },
   { key: 'sidebar-right', label: 'Colonne droite', fn: sidebarRight },
   { key: 'skill-bars', label: 'Compétences', fn: skillBars },
+  { key: 'editorial-photo', label: 'Éditorial photo', fn: editorialPhoto },
+  { key: 'photo-column', label: 'Colonne portrait', fn: photoColumn },
+  { key: 'top-portrait', label: 'Bandeau portrait', fn: topPortrait },
 ]
 
 export function buildLayout(layoutKey: string, style: TemplateStyle, content: CvContent) {

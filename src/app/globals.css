@@ -11,7 +11,7 @@
   --font-weight-semibold: 700;
   --font-weight-bold: 800;
   --font-weight-extrabold: 800;
-
+ 
   --shadow-card: 0 4px 16px -5px rgb(14 34 56 / 14%), 0 1px 3px rgb(14 34 56 / 8%);
   --shadow-card-hover: 0 20px 42px -16px rgb(14 34 56 / 28%), 0 5px 12px -6px rgb(14 34 56 / 10%);
   --shadow-panel: 0 16px 42px -20px rgb(14 34 56 / 24%);
@@ -98,12 +98,16 @@
     @apply font-extrabold tracking-tight;
   }
 }
-
+/*
 @layer utilities {
+  :where(a, button, input[type='button'], input[type='submit'], input[type='reset'], [role='button']) {
+    box-shadow-[6px 6px 0 #000] !important;
+  } 
+
   .font-bold {
     font-weight: 800;
   }
-}
+}*/
 
 .checkerboard {
   background-color: #eef1f5;

@@ -1,8 +1,8 @@
-import { HomeHero } from '@/components/home/home-hero'
-import { HomeCategories } from '@/components/home/home-categories'
-import { HomeShowcase } from '@/components/home/home-showcase'
-import { HomeFeatures } from '@/components/home/home-features'
-import { HomeCta } from '@/components/home/home-cta'
+import { HomeHero } from '@/components/home/Bloc1'
+import { HomeCategories } from '@/components/home/Choi_Cartegorie'
+import { HomeShowcase } from '@/components/home/bloc2'
+import { HomeFeatures } from '@/components/home/Bloc3_'
+import { HomeCta } from '@/components/home/Bloc4_start'
 import { TEMPLATES } from '@/lib/cv/templates'
 import { getThumbnailMap } from '@/lib/cv/thumbnails'
 

@@ -37,6 +37,8 @@ interface EditorState {
   patch: (id: string, patch: ElementPatch, record?: boolean) => void
   patchMany: (patches: Record<string, ElementPatch>, record?: boolean) => void
   patchSelected: (patch: ElementPatch, record?: boolean) => void
+  replaceElement: (id: string, element: CvElement) => void
+  fillShapeWithImage: (shapeId: string, imageId: string) => void
   add: (el: CvElement | CvElement[]) => void
   removeSelected: () => void
   duplicateSelected: () => void
@@ -104,6 +106,44 @@ export const useEditor = create<EditorState>()((set, get) => {
     patchSelected: (patch, record = true) => {
       const ids = new Set(get().selected)
       commit((d) => ({ elements: d.elements.map((el) => (ids.has(el.id) ? ({ ...el, ...patch } as CvElement) : el)) }), record)
+    },
+
+    replaceElement: (id, element) => {
+      commit((d) => ({ elements: d.elements.map((current) => (current.id === id ? element : current)) }))
+      set({ selected: [id], editingId: null })
+    },
+
+    fillShapeWithImage: (shapeId, imageId) => {
+      const design = get().design
+      const shape = design?.elements.find((element) => element.id === shapeId)
+      const source = design?.elements.find((element) => element.id === imageId)
+      if (!design || !shape || (shape.type !== 'rect' && shape.type !== 'circle') || !source || source.type !== 'image') return
+      if (shape.locked || source.locked) return
+
+      const filled: ImageElement = {
+        ...source,
+        id: shape.id,
+        name: source.name ?? shape.name,
+        x: shape.x,
+        y: shape.y,
+        w: shape.w,
+        h: shape.h,
+        rotation: shape.rotation,
+        opacity: shape.opacity,
+        locked: shape.locked,
+        hidden: shape.hidden,
+        radius: shape.type === 'circle' ? 9999 : shape.radius,
+        fit: 'cover',
+        isShapeFill: true,
+        stroke: shape.stroke,
+        strokeWidth: shape.strokeWidth,
+      }
+      commit((current) => ({
+        elements: current.elements
+          .filter((element) => element.id !== imageId)
+          .map((element) => (element.id === shapeId ? filled : element)),
+      }))
+      set({ selected: [shapeId], editingId: null })
     },
 
     add: (input) => {

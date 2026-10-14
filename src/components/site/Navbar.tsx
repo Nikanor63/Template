@@ -30,7 +30,7 @@ export function SiteHeader() {
               key={l.href}
               href={l.href}
               className={cn(
-                'rounded-full px-4 py-2 text-sm font-bold text-ink/70 transition-colors hover:bg-secondary hover:text-ink',
+                'rounded-full px-4 py-2 text-sm font-extrabold uppercase text-ink/70 transition-colors hover:bg-secondary hover:text-ink',
                 pathname.startsWith(l.href) && 'bg-secondary text-ink',
               )}
             >

@@ -37,8 +37,8 @@ export function FavoriteButton({
         }
       }}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-full bg-white/95 text-ink shadow-sm ring-1 ring-black/5 transition-colors hover:bg-white',
-        withLabel ? 'h-11 px-5 text-sm font-bold' : 'size-9',
+        'inline-flex items-center justify-center gap-2 rounded-full uppercase shadow-[6px 6px 0 #000] font-extrabold bg-white/95 ring-1 ring-black/5 transition-colors hover:bg-white',
+        withLabel ? 'h-11 px-5 text-sm font-extrabold' : 'size-9',
         className,
       )}
     >

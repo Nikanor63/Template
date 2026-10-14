@@ -17,27 +17,27 @@ export function TemplateCard({ template, thumbnail }: { template: CvTemplate; th
           <button
             type="button"
             onClick={() => open(template)}
-            className="flex-1 rounded-full bg-primary py-2.5 text-sm font-extrabold text-ink shadow-primary transition-colors hover:bg-primary-light"
+            className="flex-1 rounded-full bg-primary py-2.5 text-sm font-extrabold text-ink transition-colors hover:bg-primary-light"
           >
             Créer
           </button>
           <Link
             href={`/apercu/${template.id}`}
-            className="flex-1 rounded-full bg-white py-2.5 text-center text-sm font-extrabold text-ink transition-colors hover:bg-surface"
+            className="flex-1 rounded-full bg-white py-2.5 text-center text-sm font-extrabold uppercase text-ink transition-colors hover:bg-surface"
           >
-            Voir plus
+            Aperçu
           </Link>
         </div>
         <FavoriteButton templateId={template.id} name={template.name} className="absolute right-3 top-3" />
       </div>
       <div className="flex items-start justify-between gap-2 px-1">
         <div className="min-w-0">
-          <h3 className="truncate font-bold text-ink">{template.name}</h3>
-          <p className="text-sm text-muted-foreground">{template.category}</p>
+          <h3 className="truncate font-extrabold text-ink uppercase">{template.name}</h3>
+          <p className="text-sm text-muted-foreground font-extrabold uppercase">{template.category}</p>
         </div>
         <Link
           href={`/apercu/${template.id}`}
-          className="mt-0.5 inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-primary hover:text-ink"
+          className="mt-0.5 inline-flex shrink-0 items-center gap-1 text-sm font-extrabold text-primary hover:text-ink"
         >
           Voir plus
           <ArrowUpRight className="size-4" aria-hidden />

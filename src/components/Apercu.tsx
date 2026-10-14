@@ -7,25 +7,24 @@ import { CvThumbnail } from '@/components/cv/cv-thumbnail'
 import { FavoriteButton } from '@/components/site/favorite-button'
 import { TemplateCard } from '@/components/site/template-card'
 import { useOpenTemplate } from '@/hooks/use-open-template'
-import { getTemplate, TEMPLATES } from '@/lib/cv/templates'
-import type { CvDesign, CvElement } from '@/lib/cv/types'
+import type { CvDesign, CvElement, CvTemplate } from '@/lib/cv/types'
 
 export default function Apercu({
-  templateId,
-  similarIds,
+  template,
+  similar,
+  categoryTemplates,
   thumbnails,
 }: {
-  templateId: string
-  similarIds: string[]
+  template: CvTemplate
+  similar: CvTemplate[]
+  categoryTemplates: CvTemplate[]
   thumbnails: Record<string, string>
 }) {
-  const template = getTemplate(templateId)!
-  const similar = similarIds.map((id) => getTemplate(id)!).filter(Boolean)
   const open = useOpenTemplate()
   const [zoom, setZoom] = useState(1)
   const [selectedColor, setSelectedColor] = useState(template.accent)
 
-  const colors = Array.from(new Set(TEMPLATES.filter((item) => item.category === template.category).map((item) => item.accent)))
+  const colors = Array.from(new Set(categoryTemplates.map((item) => item.accent)))
   const previewDesign = useMemo(() => {
     const replace = (value: string) => value.toLowerCase() === template.accent.toLowerCase() ? selectedColor : value
     const elements = template.design.elements.map((element) => {
@@ -39,7 +38,7 @@ export default function Apercu({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
-      <Link href="/modeles" className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-ink/70 hover:text-ink">
+      <Link href="/modeles" className="mb-6 inline-flex items-center gap-2 text-sm font-extrabold uppercase hover:text-ink">
         <ArrowLeft className="size-4" aria-hidden />
         Retour aux modèles
       </Link>
@@ -79,8 +78,8 @@ export default function Apercu({
             {template.category}
           </span>
           <div>
-            <h1 className="mb-2 font-display text-4xl font-extrabold tracking-tight text-ink">{template.name}</h1>
-            <p className="leading-relaxed text-muted-foreground">
+            <h1 className="mb-2 font-display text-4xl font-extrabold uppercase tracking-tight text-ink">{template.name}</h1>
+            <p className="leading-relaxed text-muted-foreground uppercase font-extrabold">
               Un modèle {template.category.toLowerCase()} entièrement modifiable : textes, couleurs, polices, photo et
               mise en page. Format A4 prêt à imprimer.
             </p>
@@ -90,7 +89,7 @@ export default function Apercu({
             <button
               type="button"
               onClick={() => open(template)}
-              className="inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primary font-extrabold text-ink shadow-primary transition-transform hover:-translate-y-0.5"
+              className="inline-flex h-13 items-center justify-center gap-2 rounded-full bg-primary uppercase font-extrabold text-ink shadow-primary transition-transform hover:-translate-y-0.5"
             >
               <PenLine className="size-5" aria-hidden />
               Personnaliser ce modèle
@@ -100,7 +99,7 @@ export default function Apercu({
 
           {colors.length > 0 && (
             <div>
-              <h2 className="mb-3 text-sm font-bold text-ink">Palette</h2>
+              <h2 className="mb-3 text-sm font-extrabold uppercase text-ink">Palette</h2>
               <ul className="flex flex-wrap gap-2">
                 {colors.map((c) => (
                   <li key={c}>
@@ -109,7 +108,7 @@ export default function Apercu({
                       onClick={() => setSelectedColor(c)}
                       aria-label={`Appliquer la couleur ${c} à l’aperçu`}
                       aria-pressed={(selectedColor ?? template.accent) === c}
-                      className={`grid size-9 place-items-center rounded-full transition-transform hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
+                      className={`grid size-9 place-items-center rounded-full transition-transform uppercase hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ${
                         (selectedColor ?? template.accent) === c ? 'ring-2 ring-ink ring-offset-2' : 'ring-1 ring-black/10'
                       }`}
                       style={{ background: c }}
@@ -124,13 +123,13 @@ export default function Apercu({
           )}
 
           <div>
-            <h2 className="mb-3 text-sm font-bold text-ink">Inclus</h2>
-            <ul className="flex flex-col gap-2 text-sm text-ink/80">
+            <h2 className="mb-3 text-sm font-extrabold uppercase text-ink">Inclus</h2>
+            <ul className="flex flex-col gap-2 text-sm uppercase font-extrabold text-ink/80">
               {['Format A4 (210 × 297 mm)', 'Export PDF, PNG, JPG, SVG', 'Polices et couleurs modifiables', 'Compatible création par IA'].map(
                 (f) => (
                   <li key={f} className="flex items-center gap-2">
                     <span className="grid size-5 place-items-center rounded-full bg-primary/20">
-                      <Check className="size-3.5 text-ink" aria-hidden />
+                      <Check className="size-3.5 text-ink font-extrabold" aria-hidden />
                     </span>
                     {f}
                   </li>
@@ -145,7 +144,7 @@ export default function Apercu({
                 <li key={tag}>
                   <Link
                     href={`/modeles?q=${encodeURIComponent(tag)}`}
-                    className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-ink/80 hover:bg-secondary"
+                    className="rounded-full bg-muted px-3 py-1 text-xl font-extrabold text-ink/80 hover:bg-secondary"
                   >
                     #{tag}
                   </Link>
@@ -158,7 +157,7 @@ export default function Apercu({
 
       {similar.length > 0 && (
         <section aria-labelledby="similar-title" className="mt-20">
-          <h2 id="similar-title" className="mb-8 font-display text-2xl font-extrabold text-ink">
+          <h2 id="similar-title" className="mb-8 font-display text-2xl font-extrabold uppercase text-ink">
             Modèles similaires
           </h2>
           <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4">

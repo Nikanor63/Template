@@ -11,6 +11,10 @@ export function elementBoxStyle(el: CvElement): CSSProperties {
     height: el.h,
     transform: el.rotation ? `rotate(${el.rotation}deg)` : undefined,
     opacity: el.opacity,
+    overflow: el.type === 'image' ? 'hidden' : undefined,
+    borderRadius: el.type === 'image' ? (el.radius >= 9999 ? '9999px' : el.radius) : undefined,
+    border: el.type === 'image' && el.strokeWidth ? `${el.strokeWidth}px solid ${el.stroke}` : undefined,
+    boxSizing: el.type === 'image' ? 'border-box' : undefined,
   }
 }
 
@@ -81,8 +85,9 @@ export function CvElementContent({ el }: { el: CvElement }) {
             width: '100%',
             height: '100%',
             objectFit: el.fit,
-            borderRadius: el.radius >= 9999 ? '9999px' : el.radius,
-            border: el.strokeWidth ? `${el.strokeWidth}px solid ${el.stroke}` : undefined,
+            objectPosition: '50% 50%',
+            transform: `translate(${el.cropX ?? 0}%, ${el.cropY ?? 0}%) scale(${el.cropScale ?? 1})`,
+            transformOrigin: 'center',
             boxSizing: 'border-box',
             display: 'block',
           }}

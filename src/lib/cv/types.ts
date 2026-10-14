@@ -53,6 +53,11 @@ export interface ImageElement extends BaseElement {
   fit: 'cover' | 'contain'
   stroke: string
   strokeWidth: number
+  cropX?: number
+  cropY?: number
+  cropScale?: number
+  /** Image is already attached to a shape and should move as a single framed element. */
+  isShapeFill?: boolean
 }
 
 export interface IconElement extends BaseElement {

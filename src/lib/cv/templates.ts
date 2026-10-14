@@ -1,5 +1,5 @@
 import { buildLayout, LAYOUTS, type TemplateStyle } from './builder'
-import { PORTRAITS, SAMPLE_CONTENT } from './sample'
+import { SAMPLE_CONTENT } from './sample'
 import type { CvContent, CvTemplate, TemplateCategory } from './types'
 import { PAGE_HEIGHT, PAGE_WIDTH } from './types'
 
@@ -212,8 +212,8 @@ function buildTemplates(): CvTemplate[] {
   CATEGORIES.forEach((category, ci) => {
     const cfg = CONFIG[category]
     LAYOUTS.forEach((layout, li) => {
-      const palette = cfg.palettes[li]
-      const name = cfg.names[li]
+      const palette = cfg.palettes[li % cfg.palettes.length]
+      const name = cfg.names[li] ?? layout.label
       const slug = `${slugify(category)}-${String(li + 1).padStart(2, '0')}`
       const style: TemplateStyle = {
         heading: cfg.heading,
@@ -227,10 +227,8 @@ function buildTemplates(): CvTemplate[] {
         headingVariant: cfg.headingVariant,
       }
       const base = category === 'Étudiant' ? STUDENT_CONTENT : SAMPLE_CONTENT
-      const withPhoto = category !== 'Minimaliste' || li % 2 === 0
       const content: CvContent = {
         ...base,
-        photo: withPhoto ? PORTRAITS[(ci + li) % PORTRAITS.length] : undefined,
       }
       const { background, elements } = buildLayout(layout.key, style, content)
       const h = hash(slug)
@@ -258,6 +256,41 @@ function buildTemplates(): CvTemplate[] {
 }
 
 export const TEMPLATES: CvTemplate[] = buildTemplates()
+
+export function withTemplatePhoto(template: CvTemplate, photo?: string): CvTemplate {
+  if (!photo) return template
+  const li = Number(template.id.split('-').at(-1)) - 1
+  const ci = CATEGORIES.indexOf(template.category)
+  const layout = LAYOUTS[li]
+  if (!layout || ci < 0) return template
+  if (!['sidebar-left', 'header-band', 'timeline', 'split-top', 'sidebar-right', 'skill-bars', 'editorial-photo', 'photo-column', 'top-portrait'].includes(layout.key)) {
+    return template
+  }
+  const cfg = CONFIG[template.category]
+  const palette = cfg.palettes[li % cfg.palettes.length]
+  const style: TemplateStyle = {
+    heading: cfg.heading,
+    body: cfg.body,
+    primary: palette.primary,
+    secondary: palette.secondary,
+    text: palette.text ?? '#14202e',
+    muted: '#4b5a6a',
+    bg: palette.bg ?? '#ffffff',
+    upper: cfg.upper,
+    headingVariant: cfg.headingVariant,
+  }
+  const base = template.category === 'Étudiant' ? STUDENT_CONTENT : SAMPLE_CONTENT
+  const { background, elements } = buildLayout(layout.key, style, { ...base, photo })
+  return {
+    ...template,
+    tags: template.tags.includes('photo') ? template.tags : [...template.tags, 'photo'],
+    design: {
+      ...template.design,
+      background,
+      elements: elements.map((el, i) => ({ ...el, id: `${template.id}-${i}` })),
+    },
+  }
+}
 
 export function getTemplate(id: string) {
   return TEMPLATES.find((t) => t.id === id)

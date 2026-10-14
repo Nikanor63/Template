@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Apercu from '@/components/Apercu'
 import { TEMPLATES, getTemplate } from '@/lib/cv/templates'
-import { getThumbnailMap } from '@/lib/cv/thumbnails'
+import { getTemplatesWithPhotos, getThumbnailMap } from '@/lib/cv/thumbnails'
 
 export function generateStaticParams() {
   return TEMPLATES.map((t) => ({ id: t.id }))
@@ -16,8 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ApercuPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const template = getTemplate(id)
+  const templates = getTemplatesWithPhotos()
+  const template = templates.find((t) => t.id === id)
   if (!template) notFound()
-  const similar = TEMPLATES.filter((t) => t.category === template.category && t.id !== template.id).slice(0, 4)
-  return <Apercu templateId={template.id} similarIds={similar.map((s) => s.id)} thumbnails={getThumbnailMap()} />
+  const categoryTemplates = templates.filter((t) => t.category === template.category)
+  const similar = categoryTemplates.filter((t) => t.id !== template.id).slice(0, 4)
+  return <Apercu template={template} similar={similar} categoryTemplates={categoryTemplates} thumbnails={getThumbnailMap()} />
 }

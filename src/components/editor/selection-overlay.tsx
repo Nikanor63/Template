@@ -4,7 +4,7 @@ import { Copy, Lock, MoreHorizontal, RotateCw, Trash2, Unlock } from 'lucide-rea
 import type { CvElement } from '@/lib/cv/types'
 import { type ElementPatch, useEditor } from '@/lib/store/editor'
 import { cn } from '@/lib/utils'
-import type { Guides } from './editor-canvas'
+import type { Guides } from './Editeur'
 
 type Handle = 'nw' | 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w'
 type Box = { x: number; y: number; w: number; h: number }
