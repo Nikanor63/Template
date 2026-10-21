@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { FavoritesList } from '@/components/gallery/favorites-list'
-import { getThumbnailMap } from '@/lib/cv/thumbnails'
+import { getTemplatesWithPhotos } from '@/lib/cv-shared/thumbnails'
 
 export const metadata: Metadata = { title: 'Mes favoris — Bara_CV' }
 
 export default function FavorisPage() {
-  return <FavoritesList thumbnails={getThumbnailMap()} />
+  return <FavoritesList templates={getTemplatesWithPhotos()} />
 }

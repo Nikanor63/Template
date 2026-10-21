@@ -6,7 +6,7 @@ import { useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { CATEGORIES, TEMPLATES } from '@/lib/cv/templates'
+import { CATEGORIES, TEMPLATES } from '@/lib/cv-shared/templates'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -36,7 +36,7 @@ export function HomeCategories() {
         <h2 id="cat-title" className="shrink-0 text-xl font-extrabold uppercase font-poppins">
           Explorer par style
         </h2>
-        <ul className="flex flex-row gap-3">
+        <ul className="flex flex-wrap gap-3">
           {CATEGORIES.map((c, i) => (
             <li key={c} className="cat-pill">
               <Link

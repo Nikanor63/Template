@@ -1,7 +1,7 @@
 'use client'
 
 import { create } from 'zustand'
-import { uid } from '@/lib/cv/builder'
+import { uid } from '@/lib/cv-shared/builder'
 import type {
   CvDesign,
   CvElement,
@@ -10,7 +10,7 @@ import type {
   LineElement,
   ShapeElement,
   TextElement,
-} from '@/lib/cv/types'
+} from '@/lib/cv-shared/types'
 
 export type ElementPatch = Partial<
   Omit<TextElement, 'type' | 'id'> &
@@ -18,7 +18,7 @@ export type ElementPatch = Partial<
     Omit<LineElement, 'type' | 'id'> &
     Omit<ImageElement, 'type' | 'id'> &
     Omit<IconElement, 'type' | 'id'>
->
+> & { type?: CvElement['type'] }
 
 type Snapshot = { elements: CvElement[]; background: string }
 type Reorder = 'front' | 'back' | 'forward' | 'backward'
@@ -117,7 +117,7 @@ export const useEditor = create<EditorState>()((set, get) => {
       const design = get().design
       const shape = design?.elements.find((element) => element.id === shapeId)
       const source = design?.elements.find((element) => element.id === imageId)
-      if (!design || !shape || (shape.type !== 'rect' && shape.type !== 'circle') || !source || source.type !== 'image') return
+      if (!design || !shape || (shape.type !== 'rect' && shape.type !== 'circle' && shape.type !== 'image') || !source || source.type !== 'image' || shapeId === imageId) return
       if (shape.locked || source.locked) return
 
       const filled: ImageElement = {
@@ -132,7 +132,7 @@ export const useEditor = create<EditorState>()((set, get) => {
         opacity: shape.opacity,
         locked: shape.locked,
         hidden: shape.hidden,
-        radius: shape.type === 'circle' ? 9999 : shape.radius,
+        radius: shape.radius,
         fit: 'cover',
         isShapeFill: true,
         stroke: shape.stroke,

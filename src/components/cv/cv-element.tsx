@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
-import { ICONS } from '@/lib/cv/icons'
-import type { CvElement } from '@/lib/cv/types'
+import { ICONS } from '@/lib/cv-shared/icons'
+import { getShapePath, getSideDeformedPath } from '@/lib/cv-shared/shape-blocks'
+import type { CvElement } from '@/lib/cv-shared/types'
 
 export function elementBoxStyle(el: CvElement): CSSProperties {
   return {
@@ -42,19 +43,33 @@ export function CvElementContent({ el }: { el: CvElement }) {
     case 'text':
       return <p style={textStyle(el)}>{el.text}</p>
     case 'rect':
-    case 'circle':
+    case 'circle': {
+      const shape = el.shape ?? (el.type === 'circle' ? 'circle' : 'rectangle')
+      const sides = { top: el.deformTop ?? 0, right: el.deformRight ?? 0, bottom: el.deformBottom ?? 0, left: el.deformLeft ?? 0 }
+      const hasSideDeformation = Object.values(sides).some((value) => value > 0)
+      if ((shape !== 'rectangle' && shape !== 'circle') || hasSideDeformation) {
+        const path = hasSideDeformation && (shape === 'rectangle' || shape === 'circle')
+          ? getSideDeformedPath(shape, sides, el.waveCount)
+          : el.customPath ?? getShapePath(el.waveAmplitude, el.waveCount, el.wavePhase)
+        return (
+          <svg width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden style={{ overflow: 'visible' }}>
+            <path d={path} fill={el.fill} stroke={el.stroke} strokeWidth={el.strokeWidth} vectorEffect="non-scaling-stroke" />
+          </svg>
+        )
+      }
       return (
         <div
           style={{
             width: '100%',
             height: '100%',
             background: el.fill,
-            borderRadius: el.type === 'circle' ? '9999px' : el.radius,
+            borderRadius: shape === 'circle' || el.radius >= 9999 ? '9999px' : Math.max(0, el.radius),
             border: el.strokeWidth ? `${el.strokeWidth}px solid ${el.stroke}` : undefined,
             boxSizing: 'border-box',
           }}
         />
       )
+    }
     case 'line':
       return (
         <div
@@ -85,8 +100,7 @@ export function CvElementContent({ el }: { el: CvElement }) {
             width: '100%',
             height: '100%',
             objectFit: el.fit,
-            objectPosition: '50% 50%',
-            transform: `translate(${el.cropX ?? 0}%, ${el.cropY ?? 0}%) scale(${el.cropScale ?? 1})`,
+            objectPosition: `${50 - Math.max(-50, Math.min(50, el.cropX ?? 0))}% ${50 - Math.max(-50, Math.min(50, el.cropY ?? 0))}%`,
             transformOrigin: 'center',
             boxSizing: 'border-box',
             display: 'block',

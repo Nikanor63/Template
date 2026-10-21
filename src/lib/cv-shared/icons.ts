@@ -1,3 +1,11 @@
+/**
+ * # Leçon icônes
+ *
+ * Les layouts enregistrent un nom stable (par exemple `mail`) plutôt qu'un
+ * composant React. Le rendu cherche ensuite le composant correspondant ici.
+ * Pour utiliser une autre icône Lucide, importe-la en haut du fichier et ajoute
+ * son nom à cette table ; le layout peut alors appeler `makeIcon({ icon: 'mail' })`.
+ */
 import {
   Award,
   Briefcase,
@@ -20,6 +28,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
+/** Noms d'icônes utilisables dans les données `IconElement`. */
 export const ICONS: Record<string, LucideIcon> = {
   mail: Mail,
   phone: Phone,

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { CvThumbnail } from '@/components/cv/cv-thumbnail'
 import { useOpenTemplate } from '@/hooks/use-open-template'
-import type { CvTemplate } from '@/lib/cv/types'
+import type { CvTemplate } from '@/lib/cv-shared/types'
 import { FavoriteButton } from './favorite-button'
 
 export function TemplateCard({ template, thumbnail }: { template: CvTemplate; thumbnail?: string }) {
@@ -13,7 +13,7 @@ export function TemplateCard({ template, thumbnail }: { template: CvTemplate; th
     <article className="template-card group flex flex-col gap-3">
       <div className="relative overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-card-hover">
         <CvThumbnail design={template.design} thumbnail={thumbnail} alt={`Aperçu du modèle ${template.name}`} />
-        <div className="absolute inset-x-0 bottom-0 flex translate-y-2 gap-2 bg-gradient-to-t from-ink/70 to-transparent p-3 pt-10 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        <div className="absolute inset-x-0 bottom-0 flex gap-2 bg-gradient-to-t from-ink/70 to-transparent p-3 pt-10 opacity-100 transition-all duration-300 sm:translate-y-2 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
           <button
             type="button"
             onClick={() => open(template)}

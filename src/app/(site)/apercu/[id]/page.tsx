@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Apercu from '@/components/Apercu'
-import { TEMPLATES, getTemplate } from '@/lib/cv/templates'
-import { getTemplatesWithPhotos, getThumbnailMap } from '@/lib/cv/thumbnails'
+import { TEMPLATES, getTemplate } from '@/lib/cv-shared/templates'
+import { getTemplatesWithPhotos, getThumbnailMap } from '@/lib/cv-shared/thumbnails'
 
 export function generateStaticParams() {
   return TEMPLATES.map((t) => ({ id: t.id }))

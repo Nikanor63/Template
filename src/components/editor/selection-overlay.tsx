@@ -1,7 +1,7 @@
 'use client'
 
 import { Copy, Lock, MoreHorizontal, RotateCw, Trash2, Unlock } from 'lucide-react'
-import type { CvElement } from '@/lib/cv/types'
+import type { CvElement } from '@/lib/cv-shared/types'
 import { type ElementPatch, useEditor } from '@/lib/store/editor'
 import { cn } from '@/lib/utils'
 import type { Guides } from './Editeur'

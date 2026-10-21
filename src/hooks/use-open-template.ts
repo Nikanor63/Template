@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 import { useLibrary } from '@/lib/store/library'
-import type { CvTemplate } from '@/lib/cv/types'
+import type { CvTemplate } from '@/lib/cv-shared/types'
 
 export function useOpenTemplate() {
   const router = useRouter()

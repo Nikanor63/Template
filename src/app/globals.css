@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-weight-medium: 600;
   --font-weight-semibold: 700;
   --font-weight-bold: 800;
@@ -98,16 +98,13 @@
     @apply font-extrabold tracking-tight;
   }
 }
-/*
-@layer utilities {
-  :where(a, button, input[type='button'], input[type='submit'], input[type='reset'], [role='button']) {
-    box-shadow-[6px 6px 0 #000] !important;
-  } 
+:where(a:not(.logo-link), button, [role='button']) {
+  box-shadow: 4px 4px 0 #000 !important;
+}
 
-  .font-bold {
-    font-weight: 800;
-  }
-}*/
+.editor-zoom-controls button {
+  box-shadow: none !important;
+}
 
 .checkerboard {
   background-color: #eef1f5;

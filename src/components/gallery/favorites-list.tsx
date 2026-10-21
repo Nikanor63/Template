@@ -3,13 +3,13 @@
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
 import { TemplateCard } from '@/components/site/template-card'
-import { TEMPLATES } from '@/lib/cv/templates'
+import type { CvTemplate } from '@/lib/cv-shared/types'
 import { useHydrated, useLibrary } from '@/lib/store/library'
 
-export function FavoritesList({ thumbnails }: { thumbnails: Record<string, string> }) {
+export function FavoritesList({ templates }: { templates: CvTemplate[] }) {
   const hydrated = useHydrated()
   const favorites = useLibrary((s) => s.favorites)
-  const list = hydrated ? TEMPLATES.filter((t) => favorites.includes(t.id)) : []
+  const list = hydrated ? templates.filter((t) => favorites.includes(t.id)) : []
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 md:px-6">
@@ -29,7 +29,7 @@ export function FavoritesList({ thumbnails }: { thumbnails: Record<string, strin
       ) : (
         <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
           {list.map((t) => (
-            <TemplateCard key={t.id} template={t} thumbnail={thumbnails[t.id]} />
+            <TemplateCard key={t.id} template={t} />
           ))}
         </div>
       )}

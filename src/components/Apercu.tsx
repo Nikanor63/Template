@@ -7,7 +7,7 @@ import { CvThumbnail } from '@/components/cv/cv-thumbnail'
 import { FavoriteButton } from '@/components/site/favorite-button'
 import { TemplateCard } from '@/components/site/template-card'
 import { useOpenTemplate } from '@/hooks/use-open-template'
-import type { CvDesign, CvElement, CvTemplate } from '@/lib/cv/types'
+import type { CvDesign, CvElement, CvTemplate } from '@/lib/cv-shared/types'
 
 export default function Apercu({
   template,

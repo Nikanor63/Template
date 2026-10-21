@@ -8,13 +8,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { ArrowRight } from 'lucide-react'
 import { TemplateCard } from '@/components/site/template-card'
-import { getTemplate } from '@/lib/cv/templates'
+import { TEMPLATES } from '@/lib/cv-shared/templates'
+import type { CvTemplate } from '@/lib/cv-shared/types'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
-export function HomeShowcase({ templateIds, thumbnails }: { templateIds: string[]; thumbnails: Record<string, string> }) {
+export function HomeShowcase({ templates }: { templates: CvTemplate[] }) {
   const root = useRef<HTMLElement>(null)
-  const templates = templateIds.map((id) => getTemplate(id)!).filter(Boolean)
 
   useGSAP(
     () => {
@@ -41,14 +41,14 @@ export function HomeShowcase({ templateIds, thumbnails }: { templateIds: string[
             Des modèles conçus pour être remarqués
           </h2>
         </div>
-        <Link href="/modeles" className="inline-flex items-center justify-center rounded-full bg-accent-pink h-[40] w-55 gap-2 font-extrabold text-ink hover:text-surface">
-          Voir les 78 modèles
+        <Link href="/modeles" className="inline-flex min-h-10 w-fit items-center justify-center gap-2 rounded-full bg-accent-pink px-5 py-2 font-extrabold text-ink hover:text-surface">
+          Voir les {TEMPLATES.length} modèles
           <ArrowRight className="size-4" aria-hidden />
         </Link>
       </div>
       <div className="showcase-grid grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
         {templates.map((t) => (
-          <TemplateCard key={t.id} template={t} thumbnail={thumbnails[t.id]} />
+          <TemplateCard key={t.id} template={t} />
         ))}
       </div>
     </section>

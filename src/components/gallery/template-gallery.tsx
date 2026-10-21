@@ -6,8 +6,8 @@ import { useGSAP } from '@gsap/react'
 import { Heart, Plus, Search, SlidersHorizontal, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { CATEGORIES } from '@/lib/cv/templates'
-import type { CvTemplate, TemplateCategory } from '@/lib/cv/types'
+import { CATEGORIES } from '@/lib/cv-shared/templates'
+import type { CvTemplate, TemplateCategory } from '@/lib/cv-shared/types'
 import { useHydrated, useLibrary } from '@/lib/store/library'
 import { TemplateCard } from '@/components/site/template-card'
 
@@ -108,14 +108,14 @@ export function TemplateGallery({
               </button>
             )}
           </label>
-          <div className="flex gap-3">
-            <label className="relative">
+          <div className="flex flex-wrap gap-3">
+            <label className="relative min-w-0 flex-1 md:flex-none">
               <span className="sr-only">Trier par</span>
               <SlidersHorizontal className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as Sort)}
-                className="h-12 appearance-none rounded-full border border-border bg-white pl-10 pr-6 font-semibold text-ink shadow-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
+                className="h-12 max-w-full appearance-none rounded-full border border-border bg-white pl-10 pr-6 font-semibold text-ink shadow-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/20"
               >
                 {SORTS.map((s) => (
                   <option key={s.value} value={s.value}>

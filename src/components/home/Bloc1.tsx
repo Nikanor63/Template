@@ -7,7 +7,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { CvThumbnail } from '@/components/cv/cv-thumbnail'
-import { getTemplate } from '@/lib/cv/templates'
+import { getTemplate, TEMPLATES } from '@/lib/cv-shared/templates'
 
 gsap.registerPlugin(useGSAP)
 
@@ -41,7 +41,7 @@ export function HomeHero({ templateIds }: { templateIds: string[] }) {
         <div className="relative z-10 flex flex-col items-start gap-6">
           <span className="hero-badge inline-flex items-center gap-2 rounded-full bg-accent-yellow px-4 py-1.5 text-sm font-extrabold uppercase text-ink">
             <Sparkles className="size-4" aria-hidden />
-            78 modèles + création par IA
+            {TEMPLATES.length} modèles + création par IA
           </span>
           <h1 className="font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink text-balance md:text-6xl lg:text-7xl uppercase">
             <span className="block overflow-hidden pb-1">
@@ -73,9 +73,9 @@ export function HomeHero({ templateIds }: { templateIds: string[] }) {
               Créer avec l&apos;IA
             </Link>
           </div>
-          <dl className="hero-sub mt-4 flex gap-8 uppercase">
+          <dl className="hero-sub mt-4 flex flex-wrap gap-x-8 gap-y-4 uppercase">
             {[
-              ['60', 'modèles'],
+              [String(TEMPLATES.length), 'modèles'],
               ['6', 'styles'],
               ['4', 'formats d’export'],
             ].map(([n, l]) => (

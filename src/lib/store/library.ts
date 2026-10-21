@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { uid } from '@/lib/cv/builder'
-import type { CvDesign, CvTemplate } from '@/lib/cv/types'
-import { PAGE_HEIGHT, PAGE_WIDTH } from '@/lib/cv/types'
+import { uid } from '@/lib/cv-shared/builder'
+import type { CvDesign, CvTemplate } from '@/lib/cv-shared/types'
+import { PAGE_HEIGHT, PAGE_WIDTH } from '@/lib/cv-shared/types'
 
 interface LibraryState {
   favorites: string[]

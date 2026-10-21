@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CvElementContent, elementBoxStyle, textStyle } from '@/components/cv/cv-element'
-import type { CvElement, ImageElement, ShapeElement, TextElement } from '@/lib/cv/types'
+import type { CvElement, ImageElement, ShapeElement, TextElement } from '@/lib/cv-shared/types'
 import { type ElementPatch, useEditor } from '@/lib/store/editor'
 import { SelectionOverlay } from './selection-overlay'
 import { ElementContextMenu } from './element-context-menu'
@@ -90,7 +90,6 @@ export function EditorCanvas() {
   const [hovered, setHovered] = useState<string | null>(null)
   const [dropTarget, setDropTarget] = useState<string | null>(null)
   const [cropEditingId, setCropEditingId] = useState<string | null>(null)
-  const cropWheelAt = useRef(0)
   const [guides, setGuides] = useState<Guides>({ v: [], h: [] })
   const [marquee, setMarquee] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
   const [hud, setHud] = useState<{ text: string; x: number; y: number } | null>(null)
@@ -174,7 +173,6 @@ export function EditorCanvas() {
     const start = toPage(e.clientX, e.clientY)
     const originX = el.cropX ?? 0
     const originY = el.cropY ?? 0
-    const originScale = el.cropScale ?? 1
     let started = false
 
     const onMove = (event: PointerEvent) => {
@@ -184,13 +182,9 @@ export function EditorCanvas() {
         started = true
         useEditor.getState().checkpoint()
       }
-      const wantedX = originX + ((point.x - start.x) / el.w) * 100
-      const wantedY = originY + ((point.y - start.y) / el.h) * 100
-      const scale = Math.min(4, Math.max(originScale, 1 + Math.abs(wantedX) / 50, 1 + Math.abs(wantedY) / 50))
-      const maxOffset = (scale - 1) * 50
-      const cropX = Math.max(-maxOffset, Math.min(maxOffset, wantedX))
-      const cropY = Math.max(-maxOffset, Math.min(maxOffset, wantedY))
-      useEditor.getState().patch(el.id, { cropX, cropY, cropScale: scale }, false)
+      const cropX = Math.max(-50, Math.min(50, originX + ((point.x - start.x) / el.w) * 100))
+      const cropY = Math.max(-50, Math.min(50, originY + ((point.y - start.y) / el.h) * 100))
+      useEditor.getState().patch(el.id, { cropX, cropY, cropScale: 1 }, false)
     }
     const onUp = () => {
       window.removeEventListener('pointermove', onMove)
@@ -253,7 +247,7 @@ export function EditorCanvas() {
             !ignore.has(candidate.id) &&
             !candidate.locked &&
             !candidate.hidden &&
-            (candidate.type === 'rect' || candidate.type === 'circle') &&
+            (candidate.type === 'rect' || candidate.type === 'circle' || candidate.type === 'image') &&
             p.x >= candidate.x && p.x <= candidate.x + candidate.w &&
             p.y >= candidate.y && p.y <= candidate.y + candidate.h,
           )
@@ -277,25 +271,14 @@ export function EditorCanvas() {
   }
 
   const handleShapeDragOver = (e: React.DragEvent<HTMLDivElement>, el: CvElement) => {
-    if ((el.type !== 'rect' && el.type !== 'circle') || el.locked || !Array.from(e.dataTransfer.types).includes('Files')) return
+    if ((el.type !== 'rect' && el.type !== 'circle' && el.type !== 'image') || el.locked || !Array.from(e.dataTransfer.types).includes('Files')) return
     e.preventDefault()
     e.dataTransfer.dropEffect = 'copy'
     setDropTarget(el.id)
   }
 
-  const changeCropZoom = (el: ImageElement, factor: number) => {
-    useEditor.getState().checkpoint()
-    const cropScale = Math.max(1, Math.min(4, (el.cropScale ?? 1) * factor))
-    const maxOffset = (cropScale - 1) * 50
-    useEditor.getState().patch(el.id, {
-      cropScale,
-      cropX: Math.max(-maxOffset, Math.min(maxOffset, el.cropX ?? 0)),
-      cropY: Math.max(-maxOffset, Math.min(maxOffset, el.cropY ?? 0)),
-    }, false)
-  }
-
   const handleShapeDrop = (e: React.DragEvent<HTMLDivElement>, el: CvElement) => {
-    if (el.type !== 'rect' && el.type !== 'circle') return
+    if (el.type !== 'rect' && el.type !== 'circle' && el.type !== 'image') return
     const file = Array.from(e.dataTransfer.files).find((candidate) => candidate.type.startsWith('image/'))
     if (!file) return
     e.preventDefault()
@@ -306,7 +289,12 @@ export function EditorCanvas() {
     reader.onload = () => {
       if (typeof reader.result !== 'string') return
       const current = useEditor.getState().design?.elements.find((element) => element.id === el.id)
-      if (!current || (current.type !== 'rect' && current.type !== 'circle') || current.locked) return
+      if (!current || (current.type !== 'rect' && current.type !== 'circle' && current.type !== 'image') || current.locked) return
+      if (current.type === 'image') {
+        useEditor.getState().patch(current.id, { src: reader.result as string, name: file.name, cropX: 0, cropY: 0, cropScale: 1 })
+        setDropTarget(null)
+        return
+      }
       const shape = current as ShapeElement
       const image: ImageElement = {
         id: shape.id,
@@ -321,7 +309,7 @@ export function EditorCanvas() {
         opacity: shape.opacity,
         locked: shape.locked,
         hidden: shape.hidden,
-        radius: shape.type === 'circle' ? 9999 : shape.radius,
+        radius: shape.radius,
         fit: 'cover',
         isShapeFill: true,
         stroke: shape.stroke,
@@ -397,21 +385,6 @@ export function EditorCanvas() {
                     zIndex: dropTarget === el.id ? 50 : cropEditingId === el.id ? 40 : undefined,
                   }}
                   onPointerDown={(e) => startMove(e, el)}
-                  onWheel={(e) => {
-                    if (cropEditingId !== el.id || el.type !== 'image') return
-                    e.preventDefault()
-                    e.stopPropagation()
-                    const now = Date.now()
-                    if (now - cropWheelAt.current > 250) useEditor.getState().checkpoint()
-                    cropWheelAt.current = now
-                    const cropScale = Math.max(1, Math.min(4, (el.cropScale ?? 1) * (e.deltaY < 0 ? 1.08 : 0.92)))
-                    const maxOffset = (cropScale - 1) * 50
-                    useEditor.getState().patch(el.id, {
-                      cropScale,
-                      cropX: Math.max(-maxOffset, Math.min(maxOffset, el.cropX ?? 0)),
-                      cropY: Math.max(-maxOffset, Math.min(maxOffset, el.cropY ?? 0)),
-                    }, false)
-                  }}
                   onDragOver={(e) => handleShapeDragOver(e, el)}
                   onDragLeave={(e) => {
                     if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDropTarget((target) => target === el.id ? null : target)
@@ -446,36 +419,16 @@ export function EditorCanvas() {
                   {dropTarget === el.id && (
                     <div
                       className="pointer-events-none absolute inset-1 flex items-center justify-center rounded-lg bg-primary/80 px-2 text-center text-xs font-extrabold text-ink"
-                      style={{ borderRadius: el.type === 'circle' ? '9999px' : el.type === 'rect' ? el.radius : 0 }}
+                      style={{ borderRadius: el.type === 'circle' || el.type === 'rect' ? (el.radius >= 9999 ? '9999px' : Math.max(0, el.radius)) : 0 }}
                     >
-                      Déposer pour remplir la forme
+                      {el.type === 'image' ? 'Déposer pour remplacer l’image' : 'Déposer pour remplir la forme'}
                     </div>
                   )}
                   {cropEditingId === el.id && el.type === 'image' && (
                     <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-center p-2">
                       <span className="rounded-full bg-ink/85 px-3 py-1.5 text-center text-[10px] font-bold text-white shadow">
-                        Glisser pour déplacer · molette pour zoomer
+                        Glisser pour déplacer l’image dans son cadre
                       </span>
-                      <div className="pointer-events-auto absolute bottom-2 left-2 flex items-center gap-1 rounded-full bg-white p-1 shadow">
-                        <button
-                          type="button"
-                          aria-label="Réduire le zoom"
-                          className="grid size-7 place-items-center rounded-full text-sm font-bold text-ink hover:bg-muted"
-                          onPointerDown={(event) => event.stopPropagation()}
-                          onClick={() => changeCropZoom(el, 0.9)}
-                        >
-                          −
-                        </button>
-                        <button
-                          type="button"
-                          aria-label="Agrandir le zoom"
-                          className="grid size-7 place-items-center rounded-full text-sm font-bold text-ink hover:bg-muted"
-                          onPointerDown={(event) => event.stopPropagation()}
-                          onClick={() => changeCropZoom(el, 1.1)}
-                        >
-                          +
-                        </button>
-                      </div>
                       <button
                         type="button"
                         className="pointer-events-auto absolute bottom-2 right-2 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink shadow"

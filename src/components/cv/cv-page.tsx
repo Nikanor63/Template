@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import type { CvDesign } from '@/lib/cv/types'
+import type { CvDesign } from '@/lib/cv-shared/types'
 import { CvElementContent, elementBoxStyle } from './cv-element'
 
 type PageDesign = Pick<CvDesign, 'width' | 'height' | 'background' | 'elements'>

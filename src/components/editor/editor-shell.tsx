@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, Check, Circle, Download, ImagePlus, Minus, Minus as LineIcon, Palette, Plus, Redo2, Save, Square, Type, Undo2, X } from 'lucide-react'
+import { ArrowLeft, Check, Circle, Download, ImagePlus, Minus, Minus as LineIcon, Palette, Plus, Redo2, Save, Square, Type, Undo2, Waves, X } from 'lucide-react'
 import { EditorCanvas } from '@/components/editor/Editeur'
 import { StylePanel } from '@/components/editor/style-panel'
-import { makeCircle, makeLine, makeRect, makeText } from '@/lib/cv/builder'
-import type { CvDesign } from '@/lib/cv/types'
-import { PAGE_HEIGHT, PAGE_WIDTH } from '@/lib/cv/types'
+import { makeCircle, makeLine, makeRect, makeText } from '@/lib/cv-shared/builder'
+import { createShapeBlock } from '@/lib/cv-shared/shape-blocks'
+import type { CvDesign, ImageElement } from '@/lib/cv-shared/types'
+import { PAGE_HEIGHT, PAGE_WIDTH } from '@/lib/cv-shared/types'
 import { useEditor } from '@/lib/store/editor'
 import { useHydrated, useLibrary } from '@/lib/store/library'
 
@@ -98,12 +99,55 @@ export function EditorShell({ id }: { id: string }) {
         : makeLine({ x: Math.round(d.width / 2 - 80), y: Math.round(d.height / 2), w: 160, stroke: '#14202e', strokeWidth: 2, name: 'Ligne' })
     useEditor.getState().add(element)
   }
+  const addBlock = (shape: 'wave') => {
+    const d = useEditor.getState().design
+    if (!d) return
+    useEditor.getState().add(createShapeBlock(shape, {
+      x: Math.round(d.width / 2 - 100),
+      y: Math.round(d.height / 2 - 60),
+      w: 200,
+      h: 120,
+      fill: '#5CAFE7',
+    }))
+    setStylePanelOpen(true)
+  }
   const addImage = (file?: File) => {
     if (!file || !file.type.startsWith('image/')) return
     const reader = new FileReader()
     reader.onload = () => {
-      const d = useEditor.getState().design
+      const state = useEditor.getState()
+      const d = state.design
       if (!d || typeof reader.result !== 'string') return
+      const selected = state.selected.length === 1
+        ? d.elements.find((element) => element.id === state.selected[0])
+        : undefined
+      if (selected && !selected.locked && selected.type === 'image') {
+        state.patch(selected.id, { src: reader.result, name: file.name, cropX: 0, cropY: 0, cropScale: 1 })
+        return
+      }
+      if (selected && !selected.locked && (selected.type === 'rect' || selected.type === 'circle')) {
+        const image: ImageElement = {
+          id: selected.id,
+          type: 'image',
+          name: file.name,
+          src: reader.result,
+          x: selected.x,
+          y: selected.y,
+          w: selected.w,
+          h: selected.h,
+          rotation: selected.rotation,
+          opacity: selected.opacity,
+          locked: selected.locked,
+          hidden: selected.hidden,
+          radius: selected.radius,
+          fit: 'cover',
+          stroke: selected.stroke,
+          strokeWidth: selected.strokeWidth,
+          isShapeFill: true,
+        }
+        state.replaceElement(selected.id, image)
+        return
+      }
       const image = { id: `img_${Date.now().toString(36)}`, type: 'image' as const, src: reader.result, x: Math.round(d.width / 2 - 90), y: Math.round(d.height / 2 - 70), w: 180, h: 140, rotation: 0, opacity: 1, radius: 0, fit: 'cover' as const, stroke: 'transparent', strokeWidth: 0, name: file.name }
       useEditor.getState().add(image)
     }
@@ -158,7 +202,7 @@ export function EditorShell({ id }: { id: string }) {
           />
           <p className="text-xs text-muted-foreground">{dirty ? 'Modifications non enregistrées' : 'Toutes les modifications sont enregistrées'}</p>
         </div>
-        <div className="flex items-center gap-1 rounded-full border bg-surface p-1 shadow-sm">
+        <div className="editor-zoom-controls flex items-center gap-1 rounded-full border bg-surface p-1 shadow-sm">
           <button aria-label="Annuler" onClick={() => useEditor.getState().undo()} className="grid size-8 place-items-center rounded-full hover:bg-muted"><Undo2 className="size-4" /></button>
           <button aria-label="Refaire" onClick={() => useEditor.getState().redo()} className="grid size-8 place-items-center rounded-full hover:bg-muted"><Redo2 className="size-4" /></button>
           <button aria-label="Réduire" onClick={() => useEditor.getState().setZoom(zoom - 0.1)} className="grid size-8 place-items-center rounded-full hover:bg-muted"><Minus className="size-4" /></button>
@@ -168,8 +212,9 @@ export function EditorShell({ id }: { id: string }) {
         <button onClick={addText} className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-bold text-ink"><Type className="size-4" />Texte</button>
         <button onClick={() => addShape('rect')} aria-label="Ajouter un rectangle" title="Ajouter un rectangle" className="grid size-9 place-items-center rounded-full border bg-surface hover:bg-muted"><Square className="size-4" /></button>
         <button onClick={() => addShape('circle')} aria-label="Ajouter un cercle" title="Ajouter un cercle" className="grid size-9 place-items-center rounded-full border bg-surface hover:bg-muted"><Circle className="size-4" /></button>
+        <button onClick={() => addBlock('wave')} aria-label="Ajouter un bloc vague" title="Ajouter un bloc vague" className="grid size-9 place-items-center rounded-full border bg-surface hover:bg-muted"><Waves className="size-4" /></button>
         <button onClick={() => addShape('line')} aria-label="Ajouter une ligne" title="Ajouter une ligne" className="grid size-9 place-items-center rounded-full border bg-surface hover:bg-muted"><LineIcon className="size-4" /></button>
-        <label className="grid size-9 cursor-pointer place-items-center rounded-full border bg-surface hover:bg-muted" title="Importer une image"><ImagePlus className="size-4" /><input type="file" accept="image/*" className="sr-only" onChange={(e) => { addImage(e.target.files?.[0]); e.currentTarget.value = '' }} /></label>
+        <label className="grid size-9 cursor-pointer place-items-center rounded-full border bg-surface hover:bg-muted" title="Importer une image ou remplacer l’élément sélectionné"><ImagePlus className="size-4" /><input type="file" accept="image/*" className="sr-only" onChange={(e) => { addImage(e.target.files?.[0]); e.currentTarget.value = '' }} /></label>
         <button
           type="button"
           onClick={() => setStylePanelOpen((open) => !open)}
