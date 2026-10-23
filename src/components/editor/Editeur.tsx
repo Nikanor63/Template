@@ -121,11 +121,68 @@ export function EditorCanvas() {
   useEffect(() => {
     if (!cropEditingId) return
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setCropEditingId(null)
+      if (event.key === 'Escape') {
+        setCropEditingId(null)
+        return
+      }
+      const directions: Record<string, { x: number; y: number }> = {
+        ArrowLeft: { x: -1, y: 0 },
+        ArrowRight: { x: 1, y: 0 },
+        ArrowUp: { x: 0, y: -1 },
+        ArrowDown: { x: 0, y: 1 },
+      }
+      const direction = directions[event.key]
+      if (!direction) return
+      event.preventDefault()
+      const image = useEditor.getState().design?.elements.find((element) => element.id === cropEditingId)
+      if (image?.type !== 'image') return
+      useEditor.getState().checkpoint()
+      const step = event.shiftKey ? 5 : 1
+      useEditor.getState().patch(image.id, {
+        cropX: Math.max(-50, Math.min(50, (image.cropX ?? 0) + direction.x * step)),
+        cropY: Math.max(-50, Math.min(50, (image.cropY ?? 0) + direction.y * step)),
+      }, false)
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [cropEditingId])
+
+  useEffect(() => {
+    if (!cropEditingId) return
+    const onPointerDown = (event: PointerEvent) => {
+      if ((event.target as Element | null)?.closest('[data-crop-editing-image="true"]')) return
+      setCropEditingId(null)
+    }
+    document.addEventListener('pointerdown', onPointerDown, true)
+    return () => document.removeEventListener('pointerdown', onPointerDown, true)
+  }, [cropEditingId])
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (cropEditingId || editingId || event.altKey || event.ctrlKey || event.metaKey) return
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return
+      const target = event.target as HTMLElement | null
+      if (target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(target?.tagName ?? '')) return
+      const state = useEditor.getState()
+      const selectedIds = state.selected
+      if (!selectedIds.length || !state.design) return
+      event.preventDefault()
+      const delta = event.shiftKey ? 10 : 1
+      const dx = event.key === 'ArrowLeft' ? -delta : event.key === 'ArrowRight' ? delta : 0
+      const dy = event.key === 'ArrowUp' ? -delta : event.key === 'ArrowDown' ? delta : 0
+      const patches: Record<string, ElementPatch> = {}
+      state.design.elements.forEach((element) => {
+        if (selectedIds.includes(element.id) && !element.locked) {
+          patches[element.id] = { x: element.x + dx, y: element.y + dy }
+        }
+      })
+      if (!Object.keys(patches).length) return
+      state.checkpoint()
+      state.patchMany(patches, false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [cropEditingId, editingId])
 
   useEffect(() => {
     const vp = viewportRef.current
@@ -168,7 +225,6 @@ export function EditorCanvas() {
 
   const startCropMove = (e: React.PointerEvent, el: ImageElement) => {
     if (e.button !== 0 || el.locked) return
-    e.preventDefault()
     e.stopPropagation()
     const start = toPage(e.clientX, e.clientY)
     const originX = el.cropX ?? 0
@@ -222,7 +278,6 @@ export function EditorCanvas() {
     }
     const ignore = new Set(moving.map((m) => m.id))
     let started = false
-    let targetShapeId: string | null = null
 
     const onMove = (ev: PointerEvent) => {
       const p = toPage(ev.clientX, ev.clientY)
@@ -240,28 +295,11 @@ export function EditorCanvas() {
       const patches: Record<string, ElementPatch> = {}
       for (const id of Object.keys(origin)) patches[id] = { x: Math.round(origin[id].x + dx), y: Math.round(origin[id].y + dy) }
       useEditor.getState().patchMany(patches, false)
-      const canFillShape = moving.length === 1 && moving[0].type === 'image' && !moving[0].isShapeFill
-      const currentDesign = useEditor.getState().design
-      const targetShape = canFillShape && currentDesign
-        ? [...currentDesign.elements].reverse().find((candidate) =>
-            !ignore.has(candidate.id) &&
-            !candidate.locked &&
-            !candidate.hidden &&
-            (candidate.type === 'rect' || candidate.type === 'circle' || candidate.type === 'image') &&
-            p.x >= candidate.x && p.x <= candidate.x + candidate.w &&
-            p.y >= candidate.y && p.y <= candidate.y + candidate.h,
-          )
-        : undefined
-      targetShapeId = targetShape?.id ?? null
-      setDropTarget(targetShapeId)
       setHud({ text: `x ${Math.round(bbox.x + dx)} · y ${Math.round(bbox.y + dy)}`, x: ev.clientX, y: ev.clientY })
     }
     const onUp = () => {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
-      if (targetShapeId && moving.length === 1 && moving[0].type === 'image') {
-        useEditor.getState().fillShapeWithImage(targetShapeId, moving[0].id)
-      }
       setDropTarget(null)
       setGuides({ v: [], h: [] })
       setHud(null)
@@ -381,9 +419,11 @@ export function EditorCanvas() {
                     ...elementBoxStyle(el),
                     height: el.type === 'text' ? 'auto' : el.h,
                     cursor: el.locked ? 'default' : cropEditingId === el.id ? 'grab' : 'move',
+                    touchAction: el.type === 'image' && cropEditingId === el.id ? 'none' : undefined,
                     boxShadow: dropTarget === el.id ? 'inset 0 0 0 4px #5CAFE7' : undefined,
                     zIndex: dropTarget === el.id ? 50 : cropEditingId === el.id ? 40 : undefined,
                   }}
+                  data-crop-editing-image={cropEditingId === el.id && el.type === 'image' ? 'true' : undefined}
                   onPointerDown={(e) => startMove(e, el)}
                   onDragOver={(e) => handleShapeDragOver(e, el)}
                   onDragLeave={(e) => {
@@ -400,6 +440,12 @@ export function EditorCanvas() {
                     } else if (el.type === 'image' && !el.locked) {
                       useEditor.getState().select([el.id])
                       setCropEditingId((current) => current === el.id ? null : el.id)
+                    }
+                  }}
+                  onClick={(e) => {
+                    if (cropEditingId === el.id && el.type === 'image') {
+                      e.stopPropagation()
+                      setCropEditingId(null)
                     }
                   }}
                   onContextMenu={(e) => {
@@ -425,19 +471,7 @@ export function EditorCanvas() {
                     </div>
                   )}
                   {cropEditingId === el.id && el.type === 'image' && (
-                    <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-center p-2">
-                      <span className="rounded-full bg-ink/85 px-3 py-1.5 text-center text-[10px] font-bold text-white shadow">
-                        Glisser pour déplacer l’image dans son cadre
-                      </span>
-                      <button
-                        type="button"
-                        className="pointer-events-auto absolute bottom-2 right-2 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-ink shadow"
-                        onPointerDown={(event) => event.stopPropagation()}
-                        onClick={() => setCropEditingId(null)}
-                      >
-                        Terminer
-                      </button>
-                    </div>
+                    <div className="pointer-events-none absolute inset-0 border-2 border-primary" aria-hidden />
                   )}
                 </div>
               )

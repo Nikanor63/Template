@@ -1245,7 +1245,7 @@ export const Sample_AdjouaKacou: CvContent = {
 }
 
 export const Sample_AdjouaKouadio: CvContent = {
-  "fullName": "Adjoua Kouadio",
+  "fullName": "Pière Lota",
   "title": "Gestionnaire commercial",
   "summary": "Gestionnaire commercial expérimenté(e), spécialisé(e) en vente de solutions numériques, avec une approche rigoureuse et orientée résultats.",
   "email": "profil.9@exemple.ci",
@@ -1677,10 +1677,10 @@ export const Sample_AhouAssi: CvContent = {
 }
 
 export const Sample_AhouBamba: CvContent = {
-  "fullName": "Mm Bella",
+  "fullName": "Marie Sekongo",
   "title": "Responsable logistique",
   "summary": "Responsable logistique expérimenté(e), spécialisé(e) en chaîne du froid, avec une approche rigoureuse et orientée résultats.",
-  "email": "profil.17@exemple.ci",
+  "email": "Mariesekongo@gmail.ci",
   "phone": "+33 6 12 34 56 78",
   "location": "Lyon, France",
   "website": "profil-17.ci",
@@ -3458,7 +3458,236 @@ export const Sample_AminataGnahore: CvContent = {
   ]
 }
 
+/** Exemples dédiés aux dix modèles tendance, avec des identités distinctes des autres CV. */
+const TENDANCE_SAMPLE_DATA: Array<{
+  fullName: string
+  title: string
+  summary: string
+  email: string
+  phone: string
+  website: string
+  skills: string[]
+  firstRole: string
+  firstCompany: string
+  firstPeriod: string
+  firstDescription: string
+  secondRole: string
+  secondCompany: string
+  secondPeriod: string
+  secondDescription: string
+  degree: string
+  school: string
+  educationPeriod: string
+  interests: string[]
+}> = [
+  {
+    fullName: 'Djeneba Brou', title: 'Product Designer UX/UI',
+    summary: 'Product designer spécialisée dans la recherche utilisateur et la conception d’interfaces accessibles. Je transforme les besoins métiers en parcours simples, cohérents et mesurables.',
+    email: 'djeneba.brou@portfolio.ci', phone: '+225 07 60 10 20 31', website: 'djenebabrou.design',
+    skills: ['Recherche utilisateur', 'Figma & prototypage', 'Design system', 'Tests d’utilisabilité', 'Accessibilité web', 'Ateliers de co-conception'],
+    firstRole: 'Product Designer UX/UI', firstCompany: 'Studio Nimba', firstPeriod: '2022 — Aujourd’hui',
+    firstDescription: 'Conception de parcours web et mobile à partir d’entretiens, de tests utilisateurs et d’ateliers avec les équipes produit. Refonte du tunnel d’inscription avec une hausse de 24 % de son taux de complétion.',
+    secondRole: 'UX Designer', secondCompany: 'Kawa Digital', secondPeriod: '2019 — 2022',
+    secondDescription: 'Création de prototypes interactifs, documentation des composants et tests d’accessibilité avant livraison aux équipes de développement.',
+    degree: 'Master Design d’interaction', school: 'École de design d’Abidjan', educationPeriod: '2017 — 2019', interests: ['Design inclusif', 'Illustration', 'Produits numériques'],
+  },
+  {
+    fullName: 'Yacine Sangaré', title: 'Ingénieur Data & Machine Learning',
+    summary: 'Ingénieur data orienté analyse prédictive et industrialisation des modèles. Je construis des pipelines fiables et des outils de décision adaptés aux équipes opérationnelles.',
+    email: 'yacine.sangare@data.ci', phone: '+225 05 61 22 30 42', website: 'yacinesangare.dev',
+    skills: ['Python & SQL', 'Pipelines de données', 'Machine learning', 'Airflow', 'Power BI', 'Qualité des données'],
+    firstRole: 'Ingénieur Data', firstCompany: 'Ivoire Analytics', firstPeriod: '2023 — Aujourd’hui',
+    firstDescription: 'Développement de flux de données automatisés et de tableaux de bord pour suivre les indicateurs commerciaux. Mise en production de modèles de prévision contrôlés par des métriques de qualité.',
+    secondRole: 'Data Analyst', secondCompany: 'Savana Finance', secondPeriod: '2020 — 2023',
+    secondDescription: 'Nettoyage de données clients, analyses exploratoires et restitution de recommandations aux équipes risque et marketing.',
+    degree: 'Master Data Science', school: 'Université Félix Houphouët-Boigny', educationPeriod: '2018 — 2020', interests: ['Statistiques', 'Open data', 'Échecs'],
+  },
+  {
+    fullName: 'Elodie Yapi', title: 'Infirmière coordinatrice',
+    summary: 'Infirmière expérimentée en coordination des soins et accompagnement des patients. J’assure la continuité des prises en charge, la tenue des dossiers et la communication entre équipes.',
+    email: 'elodie.yapi@sante.ci', phone: '+225 01 62 31 40 53', website: 'elodieyapi.pro',
+    skills: ['Coordination des soins', 'Évaluation clinique', 'Dossier patient', 'Protocoles d’hygiène', 'Éducation thérapeutique', 'Gestion des urgences'],
+    firstRole: 'Infirmière coordinatrice', firstCompany: 'Clinique Les Palmiers', firstPeriod: '2021 — Aujourd’hui',
+    firstDescription: 'Organisation des parcours de soins, coordination des transmissions et suivi des plans de prise en charge. Accompagnement des nouveaux soignants dans l’application des protocoles.',
+    secondRole: 'Infirmière polyvalente', secondCompany: 'Centre médical du Plateau', secondPeriod: '2017 — 2021',
+    secondDescription: 'Réalisation des soins prescrits, surveillance des constantes et information des patients et de leurs proches.',
+    degree: 'Diplôme d’État d’infirmier', school: 'INFAS Abidjan', educationPeriod: '2014 — 2017', interests: ['Prévention santé', 'Formation', 'Marche'],
+  },
+  {
+    fullName: 'Moussa Tano', title: 'Ingénieur en génie civil',
+    summary: 'Ingénieur en génie civil spécialisé dans le suivi de chantier et le contrôle qualité. Je veille au respect des plans, des délais et des règles de sécurité sur les opérations.',
+    email: 'moussa.tano@batiment.ci', phone: '+225 07 63 42 51 64', website: 'moussatano.pro',
+    skills: ['Suivi de chantier', 'Lecture de plans', 'Métrés & devis', 'Contrôle qualité', 'Gestion des sous-traitants', 'Sécurité des travaux'],
+    firstRole: 'Ingénieur travaux', firstCompany: 'Bâtir Afrique', firstPeriod: '2022 — Aujourd’hui',
+    firstDescription: 'Planification des interventions, contrôle des ouvrages et suivi des approvisionnements sur des chantiers résidentiels. Rédaction des comptes rendus et levée des réserves.',
+    secondRole: 'Assistant conducteur de travaux', secondCompany: 'Groupe Lagune BTP', secondPeriod: '2019 — 2022',
+    secondDescription: 'Vérification des plans d’exécution, mise à jour des métrés et coordination quotidienne des équipes terrain.',
+    degree: 'Diplôme d’ingénieur en génie civil', school: 'INP-HB Yamoussoukro', educationPeriod: '2016 — 2019', interests: ['Architecture', 'Photographie', 'Course à pied'],
+  },
+  {
+    fullName: 'Clarisse Boni', title: 'Responsable des ressources humaines',
+    summary: 'Professionnelle RH axée sur le recrutement, le développement des compétences et la qualité de vie au travail. J’accompagne les managers avec des pratiques structurées et équitables.',
+    email: 'clarisse.boni@rh.ci', phone: '+225 05 64 53 62 75', website: 'clarisseboni.pro',
+    skills: ['Recrutement', 'Gestion des talents', 'Droit social', 'Plan de formation', 'Administration du personnel', 'Dialogue social'],
+    firstRole: 'Responsable RH', firstCompany: 'Groupe Baobab', firstPeriod: '2021 — Aujourd’hui',
+    firstDescription: 'Pilotage des recrutements et des campagnes d’évaluation pour plusieurs équipes. Mise en place d’un parcours d’intégration et d’un plan annuel de formation.',
+    secondRole: 'Chargée de développement RH', secondCompany: 'Services Horizon', secondPeriod: '2018 — 2021',
+    secondDescription: 'Suivi administratif des dossiers salariés, préparation des formations et accompagnement des responsables dans leurs besoins d’équipe.',
+    degree: 'Master Gestion des ressources humaines', school: 'Université Alassane Ouattara', educationPeriod: '2016 — 2018', interests: ['Mentorat', 'Lecture', 'Bénévolat'],
+  },
+  {
+    fullName: 'Boris Gohi', title: 'Consultant en marketing digital',
+    summary: 'Consultant en marketing digital spécialisé dans l’acquisition et la fidélisation. Je relie les objectifs de marque aux indicateurs de performance et optimise les campagnes à partir des résultats.',
+    email: 'boris.gohi@marketing.ci', phone: '+225 01 65 74 83 96', website: 'borisgohi.digital',
+    skills: ['Stratégie d’acquisition', 'SEO & SEA', 'Marketing automation', 'Analytics', 'Gestion de campagnes', 'Rédaction web'],
+    firstRole: 'Consultant marketing digital', firstCompany: 'Pixel Afrique', firstPeriod: '2022 — Aujourd’hui',
+    firstDescription: 'Définition de plans d’acquisition multicanaux, suivi des budgets publicitaires et optimisation des conversions pour des clients dans les services et le commerce.',
+    secondRole: 'Chargé de communication digitale', secondCompany: 'Maison Kawa', secondPeriod: '2019 — 2022',
+    secondDescription: 'Animation des réseaux sociaux, production de contenus et création de rapports mensuels sur l’engagement et le trafic.',
+    degree: 'Master Marketing & communication', school: 'INP-HB Yamoussoukro', educationPeriod: '2017 — 2019', interests: ['Culture numérique', 'Photographie', 'Football'],
+  },
+  {
+    fullName: 'Nafissatou Kra', title: 'Ingénieure agronome',
+    summary: 'Ingénieure agronome engagée dans l’amélioration des rendements et la diffusion de pratiques agricoles durables. Je combine diagnostic de terrain, suivi des parcelles et accompagnement des producteurs.',
+    email: 'nafissatou.kra@agro.ci', phone: '+225 07 66 85 94 07', website: 'nafissatoukra.agro',
+    skills: ['Diagnostic agronomique', 'Conduite de cultures', 'Suivi phytosanitaire', 'Irrigation', 'Conseil aux producteurs', 'Collecte de données terrain'],
+    firstRole: 'Ingénieure agronome', firstCompany: 'Terres Vivantes', firstPeriod: '2021 — Aujourd’hui',
+    firstDescription: 'Suivi des exploitations partenaires, observation des cultures et recommandations sur la fertilisation et la lutte intégrée. Formation de groupements aux pratiques de conservation des sols.',
+    secondRole: 'Assistante de production agricole', secondCompany: 'Coopérative du Bandama', secondPeriod: '2018 — 2021',
+    secondDescription: 'Organisation des visites de parcelles, collecte des données de rendement et appui à la planification des campagnes agricoles.',
+    degree: 'Diplôme d’ingénieur agronome', school: 'École supérieure d’agronomie de Yamoussoukro', educationPeriod: '2015 — 2018', interests: ['Agroécologie', 'Jardinage', 'Lecture'],
+  },
+  {
+    fullName: 'Adama N’Zi', title: 'Juriste d’entreprise',
+    summary: 'Juriste d’entreprise spécialisée en contrats commerciaux et conformité. J’aide les équipes à sécuriser leurs opérations avec des analyses accessibles, des clauses adaptées et un suivi rigoureux.',
+    email: 'adama.nzi@juridique.ci', phone: '+225 05 67 96 05 18', website: 'adamanzi.legal',
+    skills: ['Droit des contrats', 'Droit OHADA', 'Conformité', 'Négociation contractuelle', 'Veille juridique', 'Gestion des litiges'],
+    firstRole: 'Juriste d’entreprise', firstCompany: 'Ivoire Distribution', firstPeriod: '2022 — Aujourd’hui',
+    firstDescription: 'Rédaction et revue des contrats fournisseurs, conseil aux équipes commerciales et suivi des obligations réglementaires. Mise en place d’un référentiel de clauses.',
+    secondRole: 'Juriste junior', secondCompany: 'Cabinet Lexis Conseil', secondPeriod: '2019 — 2022',
+    secondDescription: 'Recherches juridiques, préparation de dossiers contentieux et appui aux formalités de création et de suivi des sociétés.',
+    degree: 'Master Droit des affaires', school: 'Université Félix Houphouët-Boigny', educationPeriod: '2017 — 2019', interests: ['Droit numérique', 'Débat', 'Lecture'],
+  },
+  {
+    fullName: 'Fanta Dago', title: 'Responsable logistique & transport',
+    summary: 'Responsable logistique orientée vers la fiabilité des approvisionnements et la maîtrise des coûts. J’organise les flux, coordonne les prestataires et suis les indicateurs de service.',
+    email: 'fanta.dago@logistique.ci', phone: '+225 01 68 07 16 29', website: 'fantadago.pro',
+    skills: ['Planification transport', 'Gestion des stocks', 'Approvisionnement', 'Négociation fournisseurs', 'Tableaux de bord', 'Management d’équipe'],
+    firstRole: 'Responsable logistique', firstCompany: 'TransIvoire Services', firstPeriod: '2021 — Aujourd’hui',
+    firstDescription: 'Coordination des expéditions, suivi des niveaux de stock et négociation des prestations de transport. Amélioration du taux de livraison à l’heure grâce à un suivi quotidien des écarts.',
+    secondRole: 'Planificatrice transport', secondCompany: 'Marché Central Distribution', secondPeriod: '2018 — 2021',
+    secondDescription: 'Construction des tournées, contrôle des documents de livraison et traitement des demandes urgentes des points de vente.',
+    degree: 'Master Logistique & supply chain', school: 'ESCA Abidjan', educationPeriod: '2016 — 2018', interests: ['Mobilité urbaine', 'Cuisine', 'Voyages'],
+  },
+  {
+    fullName: 'Cédric Tia', title: 'Analyste financier',
+    summary: 'Analyste financier spécialisé dans le pilotage budgétaire et l’aide à la décision. Je fiabilise les données, explique les écarts et construis des prévisions utiles aux responsables opérationnels.',
+    email: 'cedric.tia@finance.ci', phone: '+225 07 69 18 27 30', website: 'cedrictia.finance',
+    skills: ['Analyse financière', 'Budgets & prévisions', 'Excel avancé', 'Power BI', 'Comptabilité OHADA', 'Reporting de gestion'],
+    firstRole: 'Analyste financier', firstCompany: 'Cap Ivoire Invest', firstPeriod: '2022 — Aujourd’hui',
+    firstDescription: 'Préparation des analyses mensuelles, suivi des budgets par activité et présentation des écarts aux responsables. Automatisation de tableaux de bord de rentabilité.',
+    secondRole: 'Contrôleur de gestion junior', secondCompany: 'Groupe Savanes', secondPeriod: '2019 — 2022',
+    secondDescription: 'Collecte des données comptables, vérification des imputations et participation aux exercices de clôture et de prévision.',
+    degree: 'Master Finance d’entreprise', school: 'Université Alassane Ouattara', educationPeriod: '2017 — 2019', interests: ['Économie', 'Course à pied', 'Bénévolat'],
+  },
+]
+
+export const TENDANCE_SAMPLE_CONTENTS: CvContent[] = TENDANCE_SAMPLE_DATA.map((profile) => ({
+  ...profile,
+  location: 'Abidjan, Côte d’Ivoire',
+  photo: '',
+  experiences: [
+    { role: profile.firstRole, company: profile.firstCompany, period: profile.firstPeriod, description: profile.firstDescription },
+    { role: profile.secondRole, company: profile.secondCompany, period: profile.secondPeriod, description: profile.secondDescription },
+  ],
+  education: [{ degree: profile.degree, school: profile.school, period: profile.educationPeriod }],
+  languages: ['Français — courant', 'Anglais — professionnel'],
+}))
+
 /** Profils attribués dans le même ordre que les modèles de la galerie. */
 const RAW_SAMPLE_CONTENTS: CvContent[] = [Sample_CamilleLaurent, Sample_SoroJustine, Sample_JamesKater, Sample_OunaTresor, Sample_KouadioRodolphe, Sample_TokpaInnes, Sample_DohoBenedicte, Sample_InagoEunice, Sample_SadiaGrace, Sample_SolouAngeJunior, Sample_NitiemaAllassane, Sample_KouameAline, Sample_TraBiKevin, Sample_NDriMariam, Sample_AdjouaAmani, Sample_AdjouaAssi, Sample_AdjouaBamba, Sample_AdjouaCoulibaly, Sample_AdjouaDiabate, Sample_AdjouaAudrey, Sample_AdjouaGnahore, Sample_AdjouaKacou, Sample_AdjouaKouadio, Sample_AdjouaKouame, Sample_AdjouaKonan, Sample_AdjouaNGuessan, Sample_AdjouaOuattara, Sample_AdjouaToure, Sample_AhouAmani, Sample_AhouAssi, Sample_AhouBamba, Sample_AhouCoulibaly, Sample_AhouDiabate, Sample_AhouAudrey, Sample_AhouGnahore, Sample_AhouKacou, Sample_AhouKouadio, Sample_AhouKouame, Sample_AhouKonan, Sample_AhouNGuessan, Sample_AhouOuattara, Sample_AhouToure, Sample_AkissiAmani, Sample_AkissiAssi, Sample_AkissiBamba, Sample_AkissiCoulibaly, Sample_AkissiDiabate, Sample_AkissiAudrey, Sample_AkissiGnahore, Sample_AkissiKacou, Sample_AkissiKouadio, Sample_AkissiKouame, Sample_AkissiKonan, Sample_AkissiNGuessan, Sample_AkissiOuattara, Sample_AkissiToure, Sample_AminataAmani, Sample_AminataAssi, Sample_AminataBamba, Sample_AminataCoulibaly, Sample_AminataDiabate, Sample_AminataAudrey, Sample_AminataGnahore]
-export const SAMPLE_CONTENTS: CvContent[] = RAW_SAMPLE_CONTENTS.map(enrichCvContent)
+const DISTINCT_SAMPLE_IDENTITIES = [
+  'Awa Diarra', 'Bintou Diallo', 'Fatoumata Traoré', 'Seydou Keita', 'Hawa Camara',
+  'Oumar Fofana', 'Salimata Doumbia', 'Yacouba Dagnogo', 'Kadidia Kobenan', 'Mariam Ngoran',
+  'Kady Kadio', 'Akoua Yobouet', 'Lamine Konaté', 'Aïssata Cissé', 'Abdoulaye Sissoko',
+  'Aïssatou Ouédraogo', 'Aminata Bationo', 'Assetou Sanogo', 'Balla Sidibé', 'Fatimata Sangho',
+  'Hamed Barry', 'Ibrahim Dembélé', 'Issa Kouyaté', 'Koro Kourouma', 'Kossi Karamoko',
+  'Koulou Bakayoko', 'Kouma Gnamba', 'Mamadou Gbané', 'Mariatou Anoma', 'Modeste Zadi',
+  'Nafi Assamoi', 'Odette Ndoh', 'Ramatou Zokou', 'Rokia Akpa', 'Safiatou Beda',
+  'Salif Mbia', 'Souleymane Nzue', 'Téné Boka', 'Zana Ehouman', 'Zeynab Zro',
+  'Yvette Ahoua', 'Yvonne Coulibaly', 'Eugène Konan', 'Chérif Gnagne', 'Fati Blé',
+  'Hassana Yoboua', 'Binta Sery', 'Fatou Kacou', 'Sira Bini',
+]
+
+function emailForProfile(name: string) {
+  return `${name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.|\.$/g, '')}@exemple.ci`
+}
+
+export const SAMPLE_CONTENTS: CvContent[] = RAW_SAMPLE_CONTENTS.map((profile, index) => {
+  // Les quatorze premiers profils gardent leur identité propre; les anciens
+  // profils génériques reçoivent chacun un prénom et un nom distincts.
+  const fullName = index < 14
+    ? ({ 1: 'Justine Bédié', 8: 'Sadia Blé' }[index] ?? profile.fullName)
+    : DISTINCT_SAMPLE_IDENTITIES[index - 14]
+  const identity = fullName !== profile.fullName
+  return enrichCvContent({
+    ...profile,
+    fullName,
+    ...(identity ? { email: emailForProfile(fullName), website: `${emailForProfile(fullName).split('@')[0]}.ci` } : {}),
+  })
+})
 export const SAMPLE_CONTENT = SAMPLE_CONTENTS[0]
+
+/** Profils dédiés aux dix modèles Organique, dans le même ordre que leurs layouts. */
+export const ORGANIQUE_SAMPLE_CONTENTS: CvContent[] = [
+  {
+    fullName: 'Pélagie Amani', title: 'Directrice artistique', summary: 'Directrice artistique spécialisée en identité visuelle et direction de campagnes. Je transforme les besoins des marques en concepts cohérents, mémorables et prêts à être déclinés sur tous les supports.', email: 'pelagie.amani@exemple.ci', phone: '+225 07 11 24 38 50', location: "Abidjan, Côte d'Ivoire", website: 'pelagieamani.design', photo: '',
+    experiences: [{ role: 'Directrice artistique', company: 'Atelier Sillage', period: '2021 — Aujourd’hui', description: 'Définition des territoires de marque, conception de campagnes multicanales et accompagnement de trois designers dans la production des supports.' }, { role: 'Graphiste identité', company: 'Studio Kawa', period: '2018 — 2021', description: 'Création de logos, chartes graphiques et outils de communication pour des entreprises et associations.' }],
+    education: [{ degree: 'Master Direction artistique', school: 'École supérieure de design d’Abidjan', period: '2016 — 2018' }], skills: ['Direction artistique', 'Identité visuelle', 'Stratégie de marque', 'Suite Adobe', 'Présentation client'], languages: ['Français — courant', 'Anglais — professionnel'], interests: ['Illustration', 'Édition', 'Expositions'],
+  },
+  {
+    fullName: 'Donatien Aké', title: 'Designer UX/UI', summary: 'Designer UX/UI orienté recherche utilisateur et conception de produits numériques accessibles. Je relie les besoins des utilisateurs aux objectifs métier par des parcours simples et des interfaces testées.', email: 'donatien.ake@exemple.ci', phone: '+225 05 42 18 77 31', location: "Abidjan, Côte d'Ivoire", website: 'donatienake.design', photo: '',
+    experiences: [{ role: 'Designer UX/UI', company: 'Nimba Digital', period: '2022 — Aujourd’hui', description: 'Conduite d’entretiens, prototypage de parcours sur Figma et tests utilisateurs ayant réduit les abandons sur mobile.' }, { role: 'Assistant conception produit', company: 'Ivoire Tech Lab', period: '2019 — 2022', description: 'Création de maquettes adaptatives, documentation des composants et collaboration quotidienne avec les développeurs.' }],
+    education: [{ degree: 'Master Design d’interaction', school: 'Université Félix-Houphouët-Boigny', period: '2017 — 2019' }], skills: ['Recherche utilisateur', 'Figma', 'Prototypage', 'Accessibilité numérique', 'Design system'], languages: ['Français — natif', 'Anglais — courant'], interests: ['Ergonomie', 'Technologie', 'Dessin'],
+  },
+  {
+    fullName: "Léontine N'Cho", title: 'Architecte paysagiste', summary: 'Architecte paysagiste engagée dans la conception d’espaces publics durables. J’associe analyse du site, choix des végétaux et concertation pour créer des lieux accueillants, adaptés au climat local.', email: 'leontine.ncho@exemple.ci', phone: '+225 01 63 28 40 19', location: "Abidjan, Côte d'Ivoire", website: 'leontinencho.pro', photo: '',
+    experiences: [{ role: 'Architecte paysagiste', company: 'Terre & Trame', period: '2021 — Aujourd’hui', description: 'Conception de jardins urbains, plans de plantation et suivi de chantiers avec les équipes techniques et les collectivités.' }, { role: 'Chargée d’études paysage', company: 'Paysage Afrique', period: '2018 — 2021', description: 'Réalisation de diagnostics paysagers, dossiers de présentation et estimations de besoins en végétaux.' }],
+    education: [{ degree: 'Diplôme d’architecture du paysage', school: 'Institut national polytechnique Félix-Houphouët-Boigny', period: '2015 — 2018' }], skills: ['Conception paysagère', 'AutoCAD', 'Plans de plantation', 'Gestion de chantier', 'Végétaux tropicaux'], languages: ['Français — courant', 'Anglais — intermédiaire'], interests: ['Jardins botaniques', 'Biodiversité', 'Randonnée'],
+  },
+  {
+    fullName: 'Sylvestre Kassi', title: 'Photographe éditorial', summary: 'Photographe éditorial spécialisé dans le portrait et le reportage culturel. Je prépare chaque prise de vue avec soin et livre des séries cohérentes, fidèles aux personnes et aux histoires racontées.', email: 'sylvestre.kassi@exemple.ci', phone: '+225 07 84 20 16 55', location: "Abidjan, Côte d'Ivoire", website: 'sylvestrekassi.photo', photo: '',
+    experiences: [{ role: 'Photographe indépendant', company: 'Studio Kassi', period: '2020 — Aujourd’hui', description: 'Réalisation de portraits, reportages de terrain et visuels éditoriaux, du repérage à la retouche finale.' }, { role: 'Assistant photographe', company: 'Regards d’Afrique', period: '2017 — 2020', description: 'Préparation des éclairages, gestion du matériel et archivage des prises de vue pour les publications.' }],
+    education: [{ degree: 'Licence Arts visuels et photographie', school: 'Institut national supérieur des arts et de l’action culturelle', period: '2014 — 2017' }], skills: ['Portrait', 'Reportage', 'Éclairage studio', 'Lightroom', 'Retouche colorimétrique'], languages: ['Français — natif', 'Anglais — professionnel'], interests: ['Cinéma', 'Musique', 'Voyage'],
+  },
+  {
+    fullName: 'Blandine Agnero', title: 'Décoratrice d’intérieur', summary: 'Décoratrice d’intérieur attentive aux usages, aux matières et à la lumière. J’imagine des espaces harmonieux, établis selon le budget et les habitudes des personnes qui les utilisent.', email: 'blandine.agnero@exemple.ci', phone: '+225 07 96 32 41 08', location: "Abidjan, Côte d'Ivoire", website: 'blandineagnero.studio', photo: '',
+    experiences: [{ role: 'Décoratrice d’intérieur', company: 'Maison Naya', period: '2022 — Aujourd’hui', description: 'Conception d’ambiances, sélection de mobilier et coordination des artisans pour des projets résidentiels et commerciaux.' }, { role: 'Assistante scénographe', company: 'Espace 225', period: '2019 — 2022', description: 'Préparation de plans d’aménagement, recherches de matériaux et installation de décors temporaires.' }],
+    education: [{ degree: 'Bachelor Design d’espace', school: 'École des métiers de la création d’Abidjan', period: '2016 — 2019' }], skills: ['Aménagement intérieur', 'SketchUp', 'Palette de matières', 'Plans 2D', 'Suivi fournisseurs'], languages: ['Français — courant', 'Anglais — intermédiaire'], interests: ['Artisanat', 'Architecture', 'Mobilier ancien'],
+  },
+  {
+    fullName: 'Ghislain Gnakpa', title: 'Illustrateur jeunesse', summary: 'Illustrateur jeunesse, je construis des univers colorés et lisibles pour les livres, jeux et supports éducatifs. Je travaille du premier croquis à la livraison des fichiers prêts à imprimer.', email: 'ghislain.gnakpa@exemple.ci', phone: '+225 05 73 64 29 10', location: "Abidjan, Côte d'Ivoire", website: 'ghislaingnakpa.art', photo: '',
+    experiences: [{ role: 'Illustrateur indépendant', company: 'Les Cahiers du Baobab', period: '2021 — Aujourd’hui', description: 'Illustration de livres jeunesse, création de personnages et adaptation des images aux contraintes d’impression.' }, { role: 'Graphiste illustrateur', company: 'Éditions Lagune', period: '2018 — 2021', description: 'Production de couvertures, pictogrammes et planches pédagogiques pour des collections scolaires.' }],
+    education: [{ degree: 'Licence Illustration et image', school: 'Institut national supérieur des arts et de l’action culturelle', period: '2015 — 2018' }], skills: ['Illustration numérique', 'Dessin de personnage', 'Mise en couleur', 'Procreate', 'Préparation impression'], languages: ['Français — natif', 'Anglais — intermédiaire'], interests: ['Bande dessinée', 'Conte', 'Animation'],
+  },
+  {
+    fullName: 'Aude Béké', title: 'Motion designer', summary: 'Motion designer qui donne du rythme aux identités et aux messages. Je conçois des animations courtes, compréhensibles et adaptées aux formats sociaux, événementiels et institutionnels.', email: 'aude.beke@exemple.ci', phone: '+225 01 28 47 53 66', location: "Abidjan, Côte d'Ivoire", website: 'audebeke.motion', photo: '',
+    experiences: [{ role: 'Motion designer', company: 'Kora Studio', period: '2022 — Aujourd’hui', description: 'Création de films courts, animation de logos et déclinaison des contenus pour plusieurs formats de diffusion.' }, { role: 'Graphiste vidéo', company: 'Pixel Ivoire', period: '2019 — 2022', description: 'Montage de capsules, préparation des storyboards et habillage graphique des vidéos de marque.' }],
+    education: [{ degree: 'Master Communication audiovisuelle', school: 'Université Nangui-Abrogoua', period: '2017 — 2019' }], skills: ['After Effects', 'Animation 2D', 'Storyboard', 'Montage vidéo', 'Habillage graphique'], languages: ['Français — courant', 'Anglais — professionnel'], interests: ['Animation', 'Musique', 'Arts numériques'],
+  },
+  {
+    fullName: 'Flore Yacé', title: 'Graphiste print', summary: 'Graphiste print spécialisée dans la conception de supports éditoriaux et événementiels. Je veille à la hiérarchie de l’information, à la qualité typographique et à la conformité des fichiers.', email: 'flore.yace@exemple.ci', phone: '+225 07 49 12 83 05', location: "Abidjan, Côte d'Ivoire", website: 'floreyace.design', photo: '',
+    experiences: [{ role: 'Graphiste print', company: 'Imprimerie Baobab', period: '2021 — Aujourd’hui', description: 'Création de brochures, affiches et catalogues, préparation des fichiers et échanges techniques avec l’atelier.' }, { role: 'Maquettiste', company: 'Com’Unique', period: '2018 — 2021', description: 'Mise en page de documents, contrôle des épreuves et adaptation des créations aux contraintes de production.' }],
+    education: [{ degree: 'BTS Communication graphique', school: 'Lycée technique d’Abidjan', period: '2016 — 2018' }], skills: ['Mise en page', 'InDesign', 'Illustrator', 'Pré-presse', 'Typographie'], languages: ['Français — natif', 'Anglais — notions'], interests: ['Presse', 'Typographie', 'Reliure'],
+  },
+  {
+    fullName: 'Yannick Koffi', title: 'Designer produit', summary: 'Designer produit orienté conception et prototypage. Je transforme les contraintes d’usage et de fabrication en objets fonctionnels, en privilégiant des matériaux accessibles et des solutions réparables.', email: 'yannick.koffi@exemple.ci', phone: '+225 05 61 90 34 27', location: "Abidjan, Côte d'Ivoire", website: 'yannickkoffi.design', photo: '',
+    experiences: [{ role: 'Designer produit', company: 'Atelier Mansa', period: '2022 — Aujourd’hui', description: 'Développement de mobilier, modélisation 3D et suivi des prototypes avec les menuisiers et fabricants.' }, { role: 'Assistant conception', company: 'FabLab Abidjan', period: '2019 — 2022', description: 'Réalisation de maquettes, tests d’assemblage et documentation des étapes de fabrication.' }],
+    education: [{ degree: 'Master Design industriel', school: 'Institut national polytechnique Félix-Houphouët-Boigny', period: '2017 — 2019' }], skills: ['Conception produit', 'Fusion 360', 'Prototypage', 'Dessin technique', 'Choix des matériaux'], languages: ['Français — courant', 'Anglais — professionnel'], interests: ['Fabrication numérique', 'Mobilier', 'Économie circulaire'],
+  },
+  {
+    fullName: 'Désirée Kanga', title: 'Consultante en identité de marque', summary: 'Consultante en identité de marque, j’accompagne les petites entreprises dans la clarification de leur positionnement et la création d’un langage visuel cohérent, facile à utiliser au quotidien.', email: 'desiree.kanga@exemple.ci', phone: '+225 07 32 85 41 77', location: "Abidjan, Côte d'Ivoire", website: 'desireekanga.co', photo: '',
+    experiences: [{ role: 'Consultante branding', company: 'Kanga Conseil', period: '2021 — Aujourd’hui', description: 'Ateliers de positionnement, recommandations de marque et conception de chartes visuelles adaptées aux équipes.' }, { role: 'Chargée de communication visuelle', company: 'Maison Naya', period: '2018 — 2021', description: 'Déploiement de l’identité sur les supports de vente, les réseaux sociaux et les événements de l’entreprise.' }],
+    education: [{ degree: 'Master Marketing et communication', school: 'Université Félix-Houphouët-Boigny', period: '2016 — 2018' }], skills: ['Plateforme de marque', 'Ateliers collaboratifs', 'Identité visuelle', 'Communication', 'Conseil client'], languages: ['Français — natif', 'Anglais — courant'], interests: ['Entrepreneuriat', 'Culture', 'Écriture'],
+  },
+]

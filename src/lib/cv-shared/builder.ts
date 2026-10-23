@@ -53,9 +53,21 @@ export function uid(prefix = 'el') {
   return `${prefix}_${Date.now().toString(36)}_${counter.toString(36)}_${Math.random().toString(36).slice(2, 6)}`
 }
 
-/** Estime la hauteur d'un texte afin de placer le bloc suivant en dessous. */
-export function measureText(text: string, w: number, fontSize: number, lineHeight: number, letterSpacing = 0) {
-  const charW = fontSize * 0.52 + letterSpacing
+/** Largeur moyenne d'un caractère selon la police (1 = police de référence, un peu plus étroite que Poppins). */
+const WIDTH_FACTOR: Record<string, number> = {
+  montserrat: 1.15, poppins: 1.1, space: 1.08, manrope: 1.08, jakarta: 1.06, raleway: 1.02,
+  playfair: 1.02, outfit: 1, lora: 1, dmserif: 0.98, lato: 0.96, urbanist: 0.96,
+}
+
+/**
+ * Estime la hauteur d'un texte afin de placer le bloc suivant en dessous.
+ * `fontFamily` (facultatif) affine la largeur des lettres : Montserrat est bien
+ * plus large que Lato. Les textes tout en majuscules sont aussi plus larges.
+ */
+export function measureText(text: string, w: number, fontSize: number, lineHeight: number, letterSpacing = 0, fontFamily = '') {
+  const family = /--font-(\w+)/.exec(fontFamily)?.[1] ?? ''
+  const isCaps = text === text.toLocaleUpperCase('fr-FR') && /\p{L}/u.test(text)
+  const charW = fontSize * 0.52 * (WIDTH_FACTOR[family] ?? 1) * (isCaps ? 1.15 : 1) + letterSpacing
   const perLine = Math.max(1, Math.floor(w / charW))
   const lines = text.split('\n').reduce((sum, p) => sum + Math.max(1, Math.ceil(p.length / perLine)), 0)
   return Math.ceil(lines * fontSize * lineHeight) + 2
@@ -79,7 +91,7 @@ export function makeText(partial: Partial<TextElement> & { text: string; x: numb
     lineHeight,
     letterSpacing,
     fontSize,
-    h: partial.h ?? measureText(text, partial.w, fontSize, lineHeight, letterSpacing),
+    h: partial.h ?? measureText(text, partial.w, fontSize, lineHeight, letterSpacing, partial.fontFamily),
     ...partial,
   }
 }
@@ -313,23 +325,28 @@ function createColumn(els: CvElement[], s: TemplateStyle, x: number, y: number, 
       cy += t.h + 6
       return api
     },
-    /** Affiche chaque valeur dans une pastille colorée. */
+    /** Affiche chaque valeur dans une pastille colorée (une pastille trop longue passe sur plusieurs lignes). */
     pills(items: string[], fill: string, color: string) {
       let px = x
-      const ph = 24
+      let rowH = 0
       for (const item of items) {
-        const pw = Math.ceil(item.length * 10 * 0.56 + 22)
-        if (px + pw > x + w) {
+        const natural = Math.ceil(item.length * 11.5 * 0.56 + 24)
+        const pw = Math.min(natural, w)
+        const lines = Math.max(1, Math.ceil(natural / w))
+        const ph = lines > 1 ? Math.ceil(lines * 11.5 * 1.4) + 10 : 26
+        if (px > x && px + pw > x + w) {
           px = x
-          cy += ph + 8
+          cy += rowH + 8
+          rowH = 0
         }
-        push(makeRect({ x: px, y: cy, w: pw, h: ph, fill, radius: 12 }))
+        push(makeRect({ x: px, y: cy, w: pw, h: ph, fill, radius: lines > 1 ? 10 : 13 }))
         push(
-          makeText({ text: item, x: px, y: cy + 5, w: pw, h: 16, fontFamily: s.body, fontSize: 10, fontWeight: 600, color, align: 'center', lineHeight: 1.4 }),
+          makeText({ text: item, x: px, y: cy + 4, w: pw, h: ph - 8, fontFamily: s.body, fontSize: 11.5, fontWeight: 600, color, align: 'center', lineHeight: 1.4 }),
         )
+        rowH = Math.max(rowH, ph)
         px += pw + 8
       }
-      cy += ph + 14
+      cy += rowH + 14
       return api
     },
     /** Affiche les compétences avec une jauge horizontale. */

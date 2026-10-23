@@ -8,50 +8,58 @@ import path from 'node:path'
 import { TEMPLATES, withTemplatePhoto } from './templates'
 import type { CvTemplate } from './types'
 
-const EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp']
+const EXTENSIONS_IMAGES = ['png', 'jpg', 'jpeg', 'webp', 'avif', 'gif']
 
 /** Lit les images réellement présentes, quel que soit leur nom de fichier. */
-function getCategoryPhotos(category: CvTemplate['category']) {
-  const directory = path.join(process.cwd(), 'public', category)
-  if (!existsSync(directory)) return []
-  return readdirSync(directory)
-    .filter((file) => EXTENSIONS.includes(path.extname(file).slice(1).toLowerCase()))
-    .sort((a, b) => a.localeCompare(b))
+function lirePhotosCategorie(categorie: string) {
+  const dossier = path.join(process.cwd(), 'public', categorie)
+  if (!existsSync(dossier)) return []
+  return readdirSync(dossier)
+    .filter((fichier) => EXTENSIONS_IMAGES.includes(path.extname(fichier).slice(1).toLowerCase()))
+    .sort((nomA, nomB) => nomA.localeCompare(nomB))
 }
 
-function photoUrl(category: CvTemplate['category'], file: string) {
-  return `/${encodeURIComponent(category)}/${encodeURIComponent(file)}`
+function urlPhoto(categorie: string, fichier: string) {
+  return `/${encodeURIComponent(categorie)}/${encodeURIComponent(fichier)}`
 }
 
-function photoFor(template: CvTemplate, files: string[]) {
-  if (!files.length) return undefined
-  let hash = 0
-  for (const char of template.id) hash = (hash * 31 + char.charCodeAt(0)) >>> 0
-  return photoUrl(template.category, files[hash % files.length])
+function choisirPhotoPourModele(modele: CvTemplate, fichiers: string[], categorieSource = modele.category) {
+  if (!fichiers.length) return undefined
+  let empreinte = 0
+  for (const caractere of modele.id) empreinte = (empreinte * 31 + caractere.charCodeAt(0)) >>> 0
+  return urlPhoto(categorieSource, fichiers[empreinte % fichiers.length])
+}
+
+/** Chaque catégorie utilise exclusivement les images de son dossier public. */
+function photosDeCategorie(categorie: CvTemplate['category']) {
+  const dossierImages = categorie
+  return { fichiers: lirePhotosCategorie(dossierImages), categorieSource: dossierImages }
 }
 
 /** Recherche une miniature portant le slug de chaque modèle. */
 export function getThumbnailMap() {
-  const map: Record<string, string> = {}
-  const photosByCategory = new Map(TEMPLATES.map((template) => [template.category, getCategoryPhotos(template.category)]))
-  for (const template of TEMPLATES) {
-    const photo = photoFor(template, photosByCategory.get(template.category) ?? [])
-    if (photo) map[template.id] = photo
-    for (const ext of EXTENSIONS) {
-      const file = path.join(process.cwd(), 'public', template.category, `${template.slug}.${ext}`)
-      if (existsSync(file)) {
-        map[template.id] = photoUrl(template.category, `${template.slug}.${ext}`)
+  const miniatures: Record<string, string> = {}
+  const photosParCategorie = new Map(TEMPLATES.map((modele) => [modele.category, photosDeCategorie(modele.category)]))
+  for (const modele of TEMPLATES) {
+    const photosCategorie = photosParCategorie.get(modele.category)
+    const photo = photosCategorie ? choisirPhotoPourModele(modele, photosCategorie.fichiers, photosCategorie.categorieSource) : undefined
+    if (photo) miniatures[modele.id] = photo
+    for (const extension of EXTENSIONS_IMAGES) {
+      const fichier = path.join(process.cwd(), 'public', modele.category, `${modele.slug}.${extension}`)
+      if (existsSync(fichier)) {
+        miniatures[modele.id] = urlPhoto(modele.category, `${modele.slug}.${extension}`)
         break
       }
     }
   }
-  return map
+  return miniatures
 }
 
-export function getTemplatesWithPhotos(templates: CvTemplate[] = TEMPLATES) {
-  const photosByCategory = new Map(templates.map((template) => [template.category, getCategoryPhotos(template.category)]))
-  return templates.map((template) => {
-    const photo = photoFor(template, photosByCategory.get(template.category) ?? [])
-    return photo ? withTemplatePhoto(template, photo) : template
+export function getTemplatesWithPhotos(modeles: CvTemplate[] = TEMPLATES) {
+  const photosParCategorie = new Map(modeles.map((modele) => [modele.category, photosDeCategorie(modele.category)]))
+  return modeles.map((modele) => {
+    const photosCategorie = photosParCategorie.get(modele.category)
+    const photo = photosCategorie ? choisirPhotoPourModele(modele, photosCategorie.fichiers, photosCategorie.categorieSource) : undefined
+    return photo ? withTemplatePhoto(modele, photo) : modele
   })
 }

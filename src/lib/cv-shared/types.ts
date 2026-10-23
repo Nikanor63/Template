@@ -125,6 +125,8 @@ export type TemplateCategory =
   | 'Créatif'
   | 'Élégant'
   | 'Étudiant'
+  | 'Tendance'
+  | 'Motif'
 
 /** Métadonnées d'un modèle et design prêt à être montré dans la galerie. */
 export interface CvTemplate {

@@ -278,8 +278,13 @@ function turquoiseRounded(s: TemplateStyle, c: CvContent) {
   shape(els, 34, 34, 726, 1050, '#37d0d2', 42)
   shape(els, 34, 34, 255, 1050, '#24aeb4', 42)
   photo(els, c, 54, 52, 210, 235, 72)
-  text(els, c.fullName, 315, 72, 410, s, { fontFamily: s.heading, fontSize: 44, lineHeight: 1 })
-  text(els, c.title, 320, 166, 400, s, { fontSize: 15 })
+  const header: CvElement[] = []
+  const nameHeight = text(header, c.fullName, 315, 0, 410, s, { fontFamily: s.heading, fontSize: 44, lineHeight: 1 })
+  const titleHeight = text(header, c.title, 320, 0, 400, s, { fontSize: 15 })
+  const headerY = 52 + (235 - nameHeight - 12 - titleHeight) / 2
+  header[0].y = headerY
+  header[1].y = headerY + nameHeight + 12
+  els.push(...header)
   text(els, c.summary, 56, 330, 210, s, { fontSize: 10, color: '#173b3b' })
   contact(els, c, s, 330, 325, 385)
   let ly = heading(els, 'Compétences', 58, 626, 190, s, '#ffffff')

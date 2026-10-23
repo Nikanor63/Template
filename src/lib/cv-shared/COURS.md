@@ -168,3 +168,21 @@ Après une modification du code, lance `npx tsc --noEmit` depuis le dossier du
 projet pour vérifier les types. Si une catégorie ne s'affiche pas, vérifie
 d'abord ses trois entrées dans `templates.ts`, puis la présence de ses modules
 et de son nom dans `TemplateCategory`.
+
+## 9. La finition automatique (`postprocess.ts`)
+
+Après le layout, `finishLayout` agrandit les textes (14 px pour le texte courant,
+16 px pour les titres, taille variable pour le nom) puis re-pose les blocs pour
+éviter les chevauchements. Trois règles à connaître quand tu crées un layout :
+
+- Une décoration est rattachée au texte le plus proche : pastille ou barre qui
+  **contient** le texte, puce/icône **à gauche** (moins de 34 px), filet ou jauge
+  **juste dessous** (moins de 60 px) ou petite barre d'accent **juste au-dessus**.
+  Respecte ces distances et la décoration suivra son texte automatiquement.
+- Un texte dans une pastille garde sa police pour rester dans la forme ; un
+  texte dans un bandeau fin (hauteur ≤ 60) grandit avec les autres.
+- Si la page déborde, le texte courant passe de 14 à 13 puis 12,5 px, et les
+  espaces entre blocs sont resserrés en dernier recours.
+
+`ensureReadableText` change uniquement la couleur d'un texte dont le contraste
+avec son fond est inférieur à 2 (par exemple blanc sur blanc).

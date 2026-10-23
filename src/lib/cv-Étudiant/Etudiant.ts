@@ -60,7 +60,7 @@ export const STUDENT_CONTENTS: CvContent[] = [
     education: [{ degree: 'Master Gestion des ressources humaines', school: 'Université Félix Houphouët-Boigny', period: '2024 — 2026' }, { degree: 'Licence Gestion', school: 'Université Nangui Abrogoua', period: '2021 — 2024' }],
   },
   {
-    ...STUDENT_CONTENT, fullName: 'Loua Ange Emmanuel', title: 'Étudiant ingénieur en mines',
+    ...STUDENT_CONTENT, fullName: 'Loua Ange', title: 'Étudiant ingénieur en mines',
     email: 'ange.loua@mail.fr', website: 'ange-loua.ci',
     summary: 'Élève ingénieur en mines intéressé par la géologie et l’exploitation responsable des ressources, en recherche d’un stage de fin d’études.',
     skills: ['Géologie minière', 'Cartographie géologique', 'Échantillonnage', 'Topographie', 'Sécurité HSE', 'QGIS'],
@@ -100,7 +100,7 @@ export const STUDENT_CONTENTS: CvContent[] = [
     education: [{ degree: 'Master Génie civil', school: 'INP-HB', period: '2024 — 2026' }, { degree: 'Licence Sciences et technologies', school: 'INP-HB', period: '2021 — 2024' }],
   },
   {
-    ...STUDENT_CONTENT, fullName: 'Koffi Armel', title: 'Étudiant en agronomie',
+    ...STUDENT_CONTENT, fullName: 'Armel Koffi', title: 'Étudiant en agronomie',
     email: 'armel.koffi@mail.fr', website: 'armel-koffi.ci',
     summary: 'Étudiant en agronomie intéressé par les cultures vivrières et les pratiques agricoles durables.',
     skills: ['Conduite de cultures', 'Diagnostic phytosanitaire', 'Irrigation', 'Essais agronomiques', 'Collecte de données terrain', 'Agroécologie'],

@@ -7,13 +7,13 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { CvThumbnail } from '@/components/cv/cv-thumbnail'
-import { getTemplate, TEMPLATES } from '@/lib/cv-shared/templates'
+import { TEMPLATES } from '@/lib/cv-shared/templates'
+import type { CvTemplate } from '@/lib/cv-shared/types'
 
 gsap.registerPlugin(useGSAP)
 
-export function HomeHero({ templateIds }: { templateIds: string[] }) {
+export function HomeHero({ templates }: { templates: CvTemplate[] }) {
   const root = useRef<HTMLElement>(null)
-  const templates = templateIds.map((id) => getTemplate(id)!).filter(Boolean)
 
   useGSAP(
     () => {

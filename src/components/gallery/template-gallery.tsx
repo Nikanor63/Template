@@ -151,7 +151,13 @@ export function TemplateGallery({
                 category === c ? 'bg-primary text-ink shadow-primary' : 'bg-white text-ink ring-1 ring-border hover:bg-secondary',
               )}
             >
-              {c}
+              <span>{c}</span>
+              <span className={cn(
+                'rounded-full px-2 py-0.5 text-xs font-extrabold',
+                category === c ? 'bg-white/25 text-current' : 'bg-muted text-muted-foreground',
+              )}>
+                {c === 'Tous' ? templates.length : templates.filter((modele) => modele.category === c).length}
+              </span>
             </button>
           ))}
         </div>
